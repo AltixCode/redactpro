@@ -8,9 +8,15 @@
     "scheme": "redactpro",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#090D16"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hushtunnel.redactpro",
+      "buildNumber": "1",
       "infoPlist": {
         "NSCameraUsageDescription": "RedactPro uses the camera to capture documents for offline redaction.",
         "NSPhotoLibraryUsageDescription": "RedactPro needs photo library access to import images for redaction.",
@@ -19,8 +25,9 @@
     },
     "android": {
       "package": "com.hushtunnel.redactpro",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#0F172A",
+        "backgroundColor": "#090D16",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
