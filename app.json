@@ -1,17 +1,26 @@
 {
   "expo": {
-    "name": "redactpro",
+    "name": "RedactPro",
     "slug": "redactpro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "scheme": "redactpro",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hushtunnel.redactpro",
+      "infoPlist": {
+        "NSCameraUsageDescription": "RedactPro uses the camera to capture documents for offline redaction.",
+        "NSPhotoLibraryUsageDescription": "RedactPro needs photo library access to import images for redaction.",
+        "NSPhotoLibraryAddUsageDescription": "RedactPro exports permanently redacted images to your photo library."
+      }
     },
     "android": {
+      "package": "com.hushtunnel.redactpro",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0F172A",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -20,6 +29,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
