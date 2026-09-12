@@ -5,6 +5,7 @@ import { TouchableOpacity, Text } from 'react-native';
 import { Crown } from 'lucide-react-native';
 import { initPurchases, checkIsPro } from '../src/services/purchases';
 import { useRedactStore } from '../src/store/useRedactStore';
+import { t } from '../src/i18n';
 import '../global.css';
 
 export default function RootLayout() {
@@ -32,7 +33,7 @@ export default function RootLayout() {
                 className="bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-full flex-row items-center"
               >
                 <Crown size={14} color="#F59E0B" />
-                <Text className="text-amber-400 text-xs font-bold ml-1.5">PRO</Text>
+                <Text className="text-amber-400 text-xs font-bold ml-1.5">{t('proBadge')}</Text>
               </TouchableOpacity>
             ) : null,
         }}
@@ -40,28 +41,28 @@ export default function RootLayout() {
         <Stack.Screen
           name="index"
           options={{
-            title: 'RedactPro',
+            title: t('appName'),
             headerTitleAlign: 'left',
           }}
         />
         <Stack.Screen
           name="censor"
           options={{
-            title: 'Review Redactions',
-            headerBackTitle: 'Back',
+            title: t('censorTitle'),
+            headerBackTitle: t('back'),
           }}
         />
         <Stack.Screen
           name="export"
           options={{
-            title: 'GDPR-Safe Export',
-            headerBackTitle: 'Back',
+            title: t('exportTitle'),
+            headerBackTitle: t('back'),
           }}
         />
         <Stack.Screen
           name="paywall"
           options={{
-            title: 'RedactPro Pro',
+            title: t('paywallTitle'),
             presentation: 'modal',
           }}
         />

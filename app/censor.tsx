@@ -13,6 +13,7 @@ import {
 import { useRedactStore, RedactStyle } from '../src/store/useRedactStore';
 import { RedactionBox } from '../src/components/RedactionBox';
 import { PaywallModal } from '../src/components/PaywallModal';
+import { t } from '../src/i18n';
 
 export default function CensorScreen() {
   const router = useRouter();
@@ -34,9 +35,9 @@ export default function CensorScreen() {
   }
 
   const styles: Array<{ id: RedactStyle; label: string; isProOnly?: boolean }> = [
-    { id: 'black', label: 'Solid Black' },
-    { id: 'pixelate', label: 'Pixelate Mosaic', isProOnly: true },
-    { id: 'white', label: 'Inverted White', isProOnly: true },
+    { id: 'black', label: t('solidBlack') },
+    { id: 'pixelate', label: t('pixelateMosaic'), isProOnly: true },
+    { id: 'white', label: t('invertedWhite'), isProOnly: true },
   ];
 
   const handleSelectStyle = (s: RedactStyle, isProOnly?: boolean) => {
@@ -72,7 +73,7 @@ export default function CensorScreen() {
           <Image source={{ uri: imageUri }} className="w-full h-full" resizeMode="contain" />
           <View className="absolute top-2 right-2 bg-black/75 px-2.5 py-1 rounded-full border border-slate-700">
             <Text className="text-white text-[10px] font-mono">
-              {activeCount} active redactions
+              {t('activeRedactions', { count: activeCount })}
             </Text>
           </View>
         </View>
@@ -88,9 +89,9 @@ export default function CensorScreen() {
               <Sparkles size={18} color="#FB7185" />
             </View>
             <View className="flex-1">
-              <Text className="text-white font-bold text-sm">Auto-Redact All Detected PII</Text>
+              <Text className="text-white font-bold text-sm">{t('autoRedactTitle')}</Text>
               <Text className="text-rose-200/70 text-xs mt-0.5">
-                Automatically black out all payment cards, IBANs & phones
+                {t('autoRedactDesc')}
               </Text>
             </View>
           </View>
@@ -98,11 +99,11 @@ export default function CensorScreen() {
           {!isPro ? (
             <View className="bg-amber-500/20 px-2 py-1 rounded-lg flex-row items-center">
               <Lock size={12} color="#F59E0B" />
-              <Text className="text-amber-400 text-[10px] font-bold ml-1">PRO</Text>
+              <Text className="text-amber-400 text-[10px] font-bold ml-1">{t('proBadge')}</Text>
             </View>
           ) : (
             <View className="bg-rose-600 px-3 py-1 rounded-lg">
-              <Text className="text-white text-xs font-bold">Apply</Text>
+              <Text className="text-white text-xs font-bold">{t('apply')}</Text>
             </View>
           )}
         </TouchableOpacity>
@@ -111,7 +112,7 @@ export default function CensorScreen() {
         <View className="bg-slate-900 border border-slate-800 p-4 rounded-2xl mb-5">
           <View className="flex-row items-center mb-3">
             <Sliders size={16} color="#FB7185" />
-            <Text className="text-white font-bold text-sm ml-2">Redaction Aesthetic</Text>
+            <Text className="text-white font-bold text-sm ml-2">{t('censorAesthetic')}</Text>
           </View>
           <View className="flex-row space-x-2">
             {styles.map((s) => {
@@ -130,7 +131,7 @@ export default function CensorScreen() {
                   {s.isProOnly && !isPro && (
                     <View className="mt-1 flex-row items-center">
                       <Lock size={10} color="#F59E0B" />
-                      <Text className="text-amber-400 text-[8px] font-bold ml-0.5">PRO</Text>
+                      <Text className="text-amber-400 text-[8px] font-bold ml-0.5">{t('proBadge')}</Text>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -142,7 +143,7 @@ export default function CensorScreen() {
         {/* Detected PII Entity Regions List */}
         <View className="mb-6">
           <Text className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
-            Detected Sensitive Entities ({regions.length})
+            {t('detectedEntities', { count: regions.length })}
           </Text>
 
           {regions.map((region) => (
@@ -162,7 +163,7 @@ export default function CensorScreen() {
         >
           <ShieldAlert size={20} color="#FFFFFF" />
           <Text className="text-white font-bold text-base ml-2 mr-2">
-            Burn & Flatten {activeCount} Redactions
+            {t('burnAndFlatten', { count: activeCount })}
           </Text>
           <ArrowRight size={18} color="#FFFFFF" />
         </TouchableOpacity>

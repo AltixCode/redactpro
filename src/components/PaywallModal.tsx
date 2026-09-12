@@ -19,6 +19,7 @@ import {
 } from 'lucide-react-native';
 import { useRedactStore } from '../store/useRedactStore';
 import { purchaseLifetime, restorePurchases } from '../services/purchases';
+import { t } from '../i18n';
 
 interface PaywallModalProps {
   visible: boolean;
@@ -41,10 +42,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         onClose();
       } else {
-        setErrorMsg('Purchase was canceled or could not be completed.');
+        setErrorMsg(t('purchaseError'));
       }
     } catch {
-      setErrorMsg('An unexpected payment error occurred.');
+      setErrorMsg(t('unexpectedError'));
     } finally {
       setLoading(false);
     }
@@ -61,10 +62,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         onClose();
       } else {
-        setErrorMsg('No prior purchases found to restore.');
+        setErrorMsg(t('noPriorPurchases'));
       }
     } catch {
-      setErrorMsg('Failed to restore purchases.');
+      setErrorMsg(t('restoreError'));
     } finally {
       setLoading(false);
     }
@@ -73,23 +74,23 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
   const features = [
     {
       icon: <Zap size={20} color="#38BDF8" />,
-      title: '1-Tap Auto-Redact All PII',
-      desc: 'Instantly black out payment cards, IBANs, emails, and phone numbers.',
+      title: t('feat1Title'),
+      desc: t('feat1Desc'),
     },
     {
       icon: <EyeOff size={20} color="#A855F7" />,
-      title: 'Face Detection & Blurring',
-      desc: 'Automatically identify and obscure faces on IDs, passports, and photos.',
+      title: t('feat2Title'),
+      desc: t('feat2Desc'),
     },
     {
       icon: <Layers size={20} color="#F59E0B" />,
-      title: 'Custom Redaction Aesthetics',
-      desc: 'Choose between opaque blackout, pixelate mosaic, or high-contrast styles.',
+      title: t('feat3Title'),
+      desc: t('feat3Desc'),
     },
     {
       icon: <ShieldCheck size={20} color="#10B981" />,
-      title: '100% Private On-Device',
-      desc: 'No servers. Permanent pixel destruction occurs on your local hardware.',
+      title: t('feat4Title'),
+      desc: t('feat4Desc'),
     },
   ];
 
@@ -100,10 +101,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
           {/* Header */}
           <View className="flex-row items-center justify-between mb-4">
             <View className="flex-row items-center space-x-2">
-              <View className="bg-blue-500/20 p-2 rounded-xl">
-                <Sparkles size={20} color="#60A5FA" />
+              <View className="bg-rose-500/20 p-2 rounded-xl">
+                <Sparkles size={20} color="#FB7185" />
               </View>
-              <Text className="text-xl font-extrabold text-white ml-2">RedactPro Pro</Text>
+              <Text className="text-xl font-extrabold text-white ml-2">{t('paywallTitle')}</Text>
             </View>
             <TouchableOpacity
               onPress={onClose}
@@ -115,12 +116,12 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
           </View>
 
           {/* Anti-Subscription Banner */}
-          <View className="bg-gradient-to-r from-blue-950 to-slate-900 border border-blue-900/60 p-4 rounded-2xl mb-5">
-            <Text className="text-xs font-bold uppercase tracking-wider text-blue-400 mb-1">
-              Anti-Subscription Promise
+          <View className="bg-gradient-to-r from-rose-950 to-slate-900 border border-rose-900/60 p-4 rounded-2xl mb-5">
+            <Text className="text-xs font-bold uppercase tracking-wider text-rose-400 mb-1">
+              {t('antiSubTitle')}
             </Text>
             <Text className="text-sm font-semibold text-slate-100 leading-snug">
-              No Subscriptions. No Accounts. 100% On-Device Privacy. Own It Forever.
+              {t('antiSubHeadline')}
             </Text>
           </View>
 
@@ -148,14 +149,14 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
             onPress={handlePurchase}
             disabled={loading}
             activeOpacity={0.85}
-            className="bg-blue-600 active:bg-blue-500 p-4 rounded-2xl items-center flex-row justify-center shadow-lg shadow-blue-500/20"
+            className="bg-rose-600 active:bg-rose-500 p-4 rounded-2xl items-center flex-row justify-center shadow-lg shadow-rose-500/20"
           >
             {loading ? (
               <ActivityIndicator color="#FFFFFF" />
             ) : (
               <>
                 <Text className="text-white font-extrabold text-base mr-2">
-                  Unlock Lifetime Access — $8.99
+                  {t('lifetimeAccess')}
                 </Text>
                 <Check size={18} color="#FFFFFF" strokeWidth={3} />
               </>
@@ -165,10 +166,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
           {/* Restore & Policy Links */}
           <View className="flex-row items-center justify-center space-x-6 mt-4">
             <TouchableOpacity onPress={handleRestore} disabled={loading}>
-              <Text className="text-slate-400 text-xs underline">Restore Purchases</Text>
+              <Text className="text-slate-400 text-xs underline">{t('restorePurchases')}</Text>
             </TouchableOpacity>
             <Text className="text-slate-600 text-xs">•</Text>
-            <Text className="text-slate-500 text-xs">One-time payment. Never recurring.</Text>
+            <Text className="text-slate-500 text-xs">{t('oneTimePayment')}</Text>
           </View>
         </View>
       </View>

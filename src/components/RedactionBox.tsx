@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Eye, EyeOff, ShieldAlert } from 'lucide-react-native';
 import { DetectedTextRegion } from '../vision/ocrScanner';
+import { t } from '../i18n';
 
 interface RedactionBoxProps {
   region: DetectedTextRegion;
@@ -20,15 +21,15 @@ export const RedactionBox: React.FC<RedactionBoxProps> = ({ region, onToggle }) 
   const getPiiBadge = () => {
     switch (piiType) {
       case 'credit_card':
-        return 'Card';
+        return t('card');
       case 'iban':
-        return 'IBAN';
+        return t('iban');
       case 'email':
-        return 'Email';
+        return t('email');
       case 'phone':
-        return 'Phone';
+        return t('phone');
       default:
-        return 'PII';
+        return t('pii');
     }
   };
 
@@ -67,7 +68,7 @@ export const RedactionBox: React.FC<RedactionBoxProps> = ({ region, onToggle }) 
             </Text>
           </View>
           <Text className="text-slate-500 text-[10px] mt-0.5">
-            {isRedacted ? 'Will be permanently blacked out' : 'Preserved in export'}
+            {isRedacted ? t('willBeBlackedOut') : t('preservedInExport')}
           </Text>
         </View>
       </View>
@@ -78,7 +79,7 @@ export const RedactionBox: React.FC<RedactionBoxProps> = ({ region, onToggle }) 
         }`}
       >
         <Text className="text-white text-xs font-bold">
-          {isRedacted ? 'Redacted' : 'Keep'}
+          {isRedacted ? t('redact') : t('keep')}
         </Text>
       </View>
     </TouchableOpacity>

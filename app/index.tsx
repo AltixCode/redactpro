@@ -15,6 +15,7 @@ import {
 } from 'lucide-react-native';
 import { useRedactStore } from '../src/store/useRedactStore';
 import { scanImageForPii } from '../src/vision/ocrScanner';
+import { t } from '../src/i18n';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function HomeScreen() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       router.push('/censor');
     } catch (err: any) {
-      Alert.alert('Processing Error', err?.message || 'Failed to scan image for PII.');
+      Alert.alert(t('processingError'), err?.message || t('processingErrorDesc'));
     } finally {
       setLoading(false);
       setIsScanning(false);
@@ -55,7 +56,7 @@ export default function HomeScreen() {
         await processImage(asset.uri, asset.width || 1080, asset.height || 1920);
       }
     } catch {
-      Alert.alert('Error', 'Could not open photo library.');
+      Alert.alert(t('error'), t('couldNotOpenPhoto'));
     }
   };
 
@@ -64,7 +65,7 @@ export default function HomeScreen() {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       const permission = await ImagePicker.requestCameraPermissionsAsync();
       if (!permission.granted) {
-        Alert.alert('Permission Required', 'Camera permission is needed to capture documents.');
+        Alert.alert(t('cameraPermission'), t('cameraPermissionDesc'));
         return;
       }
 
@@ -77,7 +78,7 @@ export default function HomeScreen() {
         await processImage(asset.uri, asset.width || 1080, asset.height || 1920);
       }
     } catch {
-      Alert.alert('Error', 'Could not launch camera.');
+      Alert.alert(t('error'), t('couldNotLaunchCamera'));
     }
   };
 
@@ -89,15 +90,14 @@ export default function HomeScreen() {
           <View className="inline-flex self-start bg-rose-500/10 border border-rose-500/30 px-3 py-1 rounded-full mb-3 flex-row items-center">
             <Sparkles size={12} color="#FB7185" />
             <Text className="text-rose-400 text-xs font-semibold ml-1.5">
-              Destructive On-Device Censor
+              {t('heroBadge')}
             </Text>
           </View>
           <Text className="text-3xl font-extrabold text-white tracking-tight">
-            Permanent PII Blackout
+            {t('heroTitle')}
           </Text>
           <Text className="text-slate-400 text-sm mt-1.5 leading-relaxed">
-            Never use transparent highlighters. RedactPro permanently destroys pixels containing
-            credit cards, bank accounts, emails, and faces.
+            {t('heroSubtitle')}
           </Text>
         </View>
 
@@ -105,9 +105,9 @@ export default function HomeScreen() {
         {loading ? (
           <View className="border border-slate-800 bg-slate-900 rounded-3xl p-10 items-center justify-center my-3">
             <ActivityIndicator size="large" color="#FB7185" className="mb-4" />
-            <Text className="text-white font-bold text-base">Running On-Device Vision OCR</Text>
+            <Text className="text-white font-bold text-base">{t('runningOcr')}</Text>
             <Text className="text-slate-400 text-xs text-center mt-1 max-w-xs">
-              Locating payment cards, IBANs, and sensitive coordinates in memory...
+              {t('runningOcrDesc')}
             </Text>
           </View>
         ) : (
@@ -122,9 +122,9 @@ export default function HomeScreen() {
                   <ImageIcon size={26} color="#FB7185" />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-white font-bold text-base">Import Screenshot or Photo</Text>
+                  <Text className="text-white font-bold text-base">{t('importCardTitle')}</Text>
                   <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
-                    Select banking app screenshots, contracts, receipts, or IDs
+                    {t('importCardDesc')}
                   </Text>
                 </View>
               </View>
@@ -141,9 +141,9 @@ export default function HomeScreen() {
                   <Camera size={26} color="#60A5FA" />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-white font-bold text-base">Scan Physical Document</Text>
+                  <Text className="text-white font-bold text-base">{t('scanCameraTitle')}</Text>
                   <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
-                    Snap IDs, passports, or medical records directly
+                    {t('scanCameraDesc')}
                   </Text>
                 </View>
               </View>
@@ -155,7 +155,7 @@ export default function HomeScreen() {
         {/* Security & Architectural Guarantees */}
         <View className="mt-4 space-y-3">
           <Text className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-            Architectural Guarantees
+            {t('archGuarantees')}
           </Text>
 
           <View className="bg-slate-900/60 border border-slate-800/80 p-4 rounded-2xl flex-row items-start mb-3">
@@ -163,10 +163,9 @@ export default function HomeScreen() {
               <Zap size={18} color="#FB7185" />
             </View>
             <View className="flex-1">
-              <Text className="text-white font-bold text-sm">True Pixel Destruction</Text>
+              <Text className="text-white font-bold text-sm">{t('pixelDestruction')}</Text>
               <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
-                Replaces underlying pixels with opaque hex values and re-encodes to a single-layer
-                bitmap. Redactions cannot be reversed with image brightness tricks.
+                {t('pixelDestructionDesc')}
               </Text>
             </View>
           </View>
@@ -176,10 +175,9 @@ export default function HomeScreen() {
               <ShieldCheck size={18} color="#34D399" />
             </View>
             <View className="flex-1">
-              <Text className="text-white font-bold text-sm">100% Offline OCR</Text>
+              <Text className="text-white font-bold text-sm">{t('offlineOcr')}</Text>
               <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
-                Optical character recognition runs entirely on local device hardware. Your private
-                files never touch any external server.
+                {t('offlineOcrDesc')}
               </Text>
             </View>
           </View>

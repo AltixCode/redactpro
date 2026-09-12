@@ -13,6 +13,7 @@ import {
 import { useRedactStore } from '../src/store/useRedactStore';
 import { rasterizeRedactions, saveToPhotos } from '../src/engine/rasterizer';
 import { PrivacyBadge } from '../src/components/PrivacyBadge';
+import { t } from '../src/i18n';
 
 export default function ExportScreen() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export default function ExportScreen() {
         setExportedUri(resultPath);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       } catch (err: any) {
-        Alert.alert('Export Error', err?.message || 'Failed to rasterize redacted image.');
+        Alert.alert(t('exportError'), err?.message || t('exportErrorDesc'));
       } finally {
         setLoading(false);
       }
@@ -58,9 +59,9 @@ export default function ExportScreen() {
       if (success) {
         setSavedToRoll(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        Alert.alert('Saved!', 'Redacted image successfully saved to camera roll.');
+        Alert.alert(t('savedSuccess'), t('savedSuccessDesc'));
       } else {
-        Alert.alert('Permission Denied', 'Please grant photo library permission to save image.');
+        Alert.alert(t('permissionDenied'), t('permissionDeniedDesc'));
       }
     }
   };
@@ -76,9 +77,9 @@ export default function ExportScreen() {
       {loading ? (
         <View className="items-center">
           <ActivityIndicator size="large" color="#FB7185" className="mb-4" />
-          <Text className="text-white font-bold text-base">Permanently Destroying Pixels...</Text>
+          <Text className="text-white font-bold text-base">{t('destroyingPixels')}</Text>
           <Text className="text-slate-400 text-xs text-center mt-1 max-w-xs">
-            Stripping metadata, removing font layers, and rasterizing to flat single-layer bitmap.
+            {t('destroyingPixelsDesc')}
           </Text>
         </View>
       ) : (
@@ -90,7 +91,7 @@ export default function ExportScreen() {
             ) : null}
             <View className="absolute bottom-2 right-2 bg-emerald-950/80 border border-emerald-500/50 px-2.5 py-1 rounded-full flex-row items-center">
               <ShieldCheck size={12} color="#34D399" />
-              <Text className="text-emerald-400 text-[10px] font-bold ml-1">FLATTENED BITMAP</Text>
+              <Text className="text-emerald-400 text-[10px] font-bold ml-1">{t('flattenedBitmap')}</Text>
             </View>
           </View>
 
@@ -107,7 +108,7 @@ export default function ExportScreen() {
               className="w-full bg-rose-600 active:bg-rose-500 py-4 rounded-2xl flex-row items-center justify-center shadow-lg shadow-rose-500/20 mb-3"
             >
               <Share2 size={18} color="#FFFFFF" />
-              <Text className="text-white font-bold text-base ml-2">Share Redacted Image</Text>
+              <Text className="text-white font-bold text-base ml-2">{t('shareRedacted')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -125,7 +126,7 @@ export default function ExportScreen() {
                   savedToRoll ? 'text-emerald-400' : 'text-white'
                 }`}
               >
-                {savedToRoll ? 'Saved to Photos' : 'Save to Camera Roll'}
+                {savedToRoll ? t('savedToPhotos') : t('saveToRoll')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -136,7 +137,7 @@ export default function ExportScreen() {
           >
             <RotateCcw size={14} color="#94A3B8" />
             <Text className="text-slate-400 text-xs font-semibold ml-1.5">
-              Redact Another Document
+              {t('redactAnother')}
             </Text>
           </TouchableOpacity>
         </View>
