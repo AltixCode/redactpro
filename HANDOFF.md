@@ -8,7 +8,7 @@
 
 ### Completed Tasks
 * [x] Initialized Expo SDK 57+ repository with TypeScript template
-* [x] Configured bundle IDs (`com.hushtunnel.redactpro`) and permissions in `app.json`
+* [x] Configured bundle IDs (`com.altixcode.redactpro`) and permissions in `app.json`
 * [x] Configured NativeWind v4, Tailwind CSS, and Metro config
 * [x] Implemented universal RevenueCat module in `src/services/purchases.ts` ($8.99 Lifetime Pro)
 * [x] Implemented localized PII regex engine and Luhn card validation in `src/vision/entityDetector.ts`:
