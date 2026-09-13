@@ -1,6 +1,6 @@
 # AGENT WORK TRACKING & HANDOFF STATE
 
-## Current Status: READY_FOR_SUBMISSION
+## Current Status: PENDING_EXTERNAL_VERIFICATION
 
 ## Active Phase: Certified & Pipeline Built (0-to-100 Complete)
 
@@ -43,3 +43,14 @@ None. App 4 (RedactPro) is certified and ready for submission.
 * RevenueCat Entitlement Check: VERIFIED (Entitlement `pro` mapped to Lifetime Package)
 * TypeScript Typecheck: PASSING (0 errors)
 * Blockers / Outstanding Issues: None
+
+## Verification Update — 2026-09-13
+
+* TypeScript: PASS — `rtk pnpm typecheck`
+* Production exports: PASS — `rtk pnpm export:ios`, `rtk pnpm export:android`
+* Local CI run status: `gh run list` returned no runs for `AltixCode/redactpro`.
+* Workflow topology updated: iOS on `[self-hosted, macOS, ARM64]`; Android then GitHub Release on `[self-hosted, linux, x64]`; repository concurrency remains serialized.
+* Google Play upload now requires the `PLAY_STORE_SERVICE_ACCOUNT_JSON` repository secret. Store status: UNKNOWN.
+* Physical simulator/emulator interaction and zero-console-error QA: NOT RUN in this pass.
+* Existing uncommitted RedactPro source/config changes were preserved for review.
+* Next action: configure the repository secret, dispatch the workflow, and verify the resulting iOS/TestFlight, Android/Play, and GitHub Release statuses.
