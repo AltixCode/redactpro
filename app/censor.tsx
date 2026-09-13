@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import {
   ShieldAlert,
-  ArrowRight,
   Sparkles,
   Sliders,
   Lock,
@@ -15,6 +14,7 @@ import { PaywallModal } from '../src/components/PaywallModal';
 import { useTheme } from '../src/theme/useTheme';
 import { RedactionPreview } from '../src/components/RedactionPreview';
 import { t } from '../src/i18n';
+import { ForwardArrow } from '../src/components/DirectionalIcons';
 
 export default function CensorScreen() {
   const router = useRouter();
@@ -206,7 +206,7 @@ export default function CensorScreen() {
           <Text style={{ color: theme.onPrimary }} className="font-bold text-base ml-2 mr-2">
             {t('burnAndFlatten', { count: activeCount })}
           </Text>
-          <ArrowRight size={18} color={theme.onPrimary} />
+          <ForwardArrow size={18} color={theme.onPrimary} />
         </TouchableOpacity>
       </ScrollView>
 

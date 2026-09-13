@@ -18,12 +18,12 @@ import {
   Image as ImageIcon,
   ShieldCheck,
   Zap,
-  ArrowRight,
-} from "lucide-react-native";
+} from 'lucide-react-native';
 import { useRedactStore } from "../src/store/useRedactStore";
 import { scanImageForPii } from "../src/vision/ocrScanner";
 import { useTheme } from "../src/theme/useTheme";
 import { t } from "../src/i18n";
+import { ForwardArrow } from '../src/components/DirectionalIcons';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -204,7 +204,7 @@ export default function HomeScreen() {
                   </Text>
                 </View>
               </View>
-              <ArrowRight size={18} color={theme.textMuted} />
+              <ForwardArrow size={18} color={theme.textMuted} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -239,7 +239,7 @@ export default function HomeScreen() {
                   </Text>
                 </View>
               </View>
-              <ArrowRight size={18} color={theme.textMuted} />
+              <ForwardArrow size={18} color={theme.textMuted} />
             </TouchableOpacity>
           </View>
         )}

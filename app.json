@@ -20,7 +20,24 @@
       "infoPlist": {
         "NSCameraUsageDescription": "RedactPro uses the camera to capture documents for offline redaction.",
         "NSPhotoLibraryUsageDescription": "RedactPro needs photo library access to import images for redaction.",
-        "NSPhotoLibraryAddUsageDescription": "RedactPro exports permanently redacted images to your photo library."
+        "NSPhotoLibraryAddUsageDescription": "RedactPro exports permanently redacted images to your photo library.",
+        "CFBundleLocalizations": [
+          "en",
+          "es",
+          "fr",
+          "de",
+          "ru",
+          "zh",
+          "ja",
+          "pt",
+          "ko",
+          "it",
+          "tr",
+          "ar",
+          "fa",
+          "el"
+        ],
+        "CFBundleDevelopmentRegion": "en"
       }
     },
     "android": {
