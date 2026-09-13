@@ -1,5 +1,8 @@
 import * as FileSystem from "expo-file-system/legacy";
-import * as MediaLibrary from "expo-media-library";
+// expo-media-library's root export deprecated saveToLibraryAsync in SDK 57 and
+// now throws on use. The legacy entry keeps the function-style API working;
+// migrating to the class-based API is a separate change.
+import * as MediaLibrary from "expo-media-library/legacy";
 
 /**
  * Moves a freshly composed capture into the app cache under a stable name.
