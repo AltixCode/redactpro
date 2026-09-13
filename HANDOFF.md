@@ -46,7 +46,7 @@ None. App 4 (RedactPro) is certified and ready for submission.
 
 ## Verification Update — 2026-09-13
 
-* Pushed commit: `24a81ca` on `main`.
+* Latest workflow commit: `6d7e467` on `main`; skipped Play uploads emit an explicit warning.
 * TypeScript: PASS — `rtk pnpm typecheck`
 * Production exports: PASS — `rtk pnpm export:ios`, `rtk pnpm export:android`
 * Observed GitHub Actions runs after push: `34745142621 (queued); 34745169887 (pending)` for `AltixCode/redactpro`.
