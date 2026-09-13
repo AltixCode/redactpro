@@ -5,7 +5,6 @@ import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import * as Haptics from 'expo-haptics';
 import {
-  ShieldAlert,
   Sparkles,
   Camera,
   Image as ImageIcon,
@@ -15,10 +14,12 @@ import {
 } from 'lucide-react-native';
 import { useRedactStore } from '../src/store/useRedactStore';
 import { scanImageForPii } from '../src/vision/ocrScanner';
+import { useTheme } from '../src/theme/useTheme';
 import { t } from '../src/i18n';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const theme = useTheme();
   const { setImage, setRegions, setIsScanning } = useRedactStore();
   const [loading, setLoading] = useState(false);
 
@@ -83,30 +84,42 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView edges={['bottom']} className="flex-1 bg-slate-950 px-5">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 24 }}>
+    <SafeAreaView edges={['bottom']} style={{ flex: 1, backgroundColor: theme.background }} className="px-5">
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
         {/* Header Hero */}
         <View className="mt-4 mb-6">
-          <View className="inline-flex self-start bg-rose-500/10 border border-rose-500/30 px-3 py-1 rounded-full mb-3 flex-row items-center">
-            <Sparkles size={12} color="#FB7185" />
-            <Text className="text-rose-400 text-xs font-semibold ml-1.5">
+          <View
+            style={{
+              backgroundColor: theme.primaryLight,
+              borderColor: theme.primaryBorder,
+            }}
+            className="self-start border px-3 py-1 rounded-full mb-3 flex-row items-center"
+          >
+            <Sparkles size={13} color={theme.primary} />
+            <Text style={{ color: theme.primary }} className="text-xs font-semibold ml-1.5">
               {t('heroBadge')}
             </Text>
           </View>
-          <Text className="text-3xl font-extrabold text-white tracking-tight">
+          <Text style={{ color: theme.text }} className="text-3xl font-extrabold tracking-tight">
             {t('heroTitle')}
           </Text>
-          <Text className="text-slate-400 text-sm mt-1.5 leading-relaxed">
+          <Text style={{ color: theme.textSecondary }} className="text-sm mt-1.5 leading-relaxed">
             {t('heroSubtitle')}
           </Text>
         </View>
 
         {/* Action Import Cards */}
         {loading ? (
-          <View className="border border-slate-800 bg-slate-900 rounded-3xl p-10 items-center justify-center my-3">
-            <ActivityIndicator size="large" color="#FB7185" className="mb-4" />
-            <Text className="text-white font-bold text-base">{t('runningOcr')}</Text>
-            <Text className="text-slate-400 text-xs text-center mt-1 max-w-xs">
+          <View
+            style={{
+              backgroundColor: theme.card,
+              borderColor: theme.cardBorder,
+            }}
+            className="border rounded-3xl p-10 items-center justify-center my-3 shadow-sm"
+          >
+            <ActivityIndicator size="large" color={theme.primary} className="mb-4" />
+            <Text style={{ color: theme.text }} className="font-bold text-base">{t('runningOcr')}</Text>
+            <Text style={{ color: theme.textSecondary }} className="text-xs text-center mt-1 max-w-xs">
               {t('runningOcrDesc')}
             </Text>
           </View>
@@ -115,68 +128,90 @@ export default function HomeScreen() {
             <TouchableOpacity
               onPress={handlePickImage}
               activeOpacity={0.85}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex-row items-center justify-between mb-3"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              style={{
+                backgroundColor: theme.card,
+                borderColor: theme.cardBorder,
+              }}
+              className="border rounded-3xl p-6 flex-row items-center justify-between mb-3 shadow-sm"
             >
               <View className="flex-row items-center flex-1 mr-3">
-                <View className="bg-rose-500/15 p-3.5 rounded-2xl mr-3.5">
-                  <ImageIcon size={26} color="#FB7185" />
+                <View style={{ backgroundColor: theme.primaryLight }} className="p-3.5 rounded-2xl mr-3.5">
+                  <ImageIcon size={26} color={theme.primary} />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-white font-bold text-base">{t('importCardTitle')}</Text>
-                  <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
+                  <Text style={{ color: theme.text }} className="font-bold text-base">{t('importCardTitle')}</Text>
+                  <Text style={{ color: theme.textSecondary }} className="text-xs mt-0.5 leading-relaxed">
                     {t('importCardDesc')}
                   </Text>
                 </View>
               </View>
-              <ArrowRight size={18} color="#94A3B8" />
+              <ArrowRight size={18} color={theme.textMuted} />
             </TouchableOpacity>
 
             <TouchableOpacity
               onPress={handleCaptureCamera}
               activeOpacity={0.85}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 flex-row items-center justify-between"
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              style={{
+                backgroundColor: theme.card,
+                borderColor: theme.cardBorder,
+              }}
+              className="border rounded-3xl p-6 flex-row items-center justify-between shadow-sm"
             >
               <View className="flex-row items-center flex-1 mr-3">
-                <View className="bg-blue-500/15 p-3.5 rounded-2xl mr-3.5">
-                  <Camera size={26} color="#60A5FA" />
+                <View style={{ backgroundColor: theme.accentLight }} className="p-3.5 rounded-2xl mr-3.5">
+                  <Camera size={26} color={theme.accent} />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-white font-bold text-base">{t('scanCameraTitle')}</Text>
-                  <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
+                  <Text style={{ color: theme.text }} className="font-bold text-base">{t('scanCameraTitle')}</Text>
+                  <Text style={{ color: theme.textSecondary }} className="text-xs mt-0.5 leading-relaxed">
                     {t('scanCameraDesc')}
                   </Text>
                 </View>
               </View>
-              <ArrowRight size={18} color="#94A3B8" />
+              <ArrowRight size={18} color={theme.textMuted} />
             </TouchableOpacity>
           </View>
         )}
 
         {/* Security & Architectural Guarantees */}
         <View className="mt-4 space-y-3">
-          <Text className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
+          <Text style={{ color: theme.textMuted }} className="text-xs font-bold uppercase tracking-wider mb-2">
             {t('archGuarantees')}
           </Text>
 
-          <View className="bg-slate-900/60 border border-slate-800/80 p-4 rounded-2xl flex-row items-start mb-3">
-            <View className="bg-rose-500/10 p-2 rounded-xl mr-3">
-              <Zap size={18} color="#FB7185" />
+          <View
+            style={{
+              backgroundColor: theme.card,
+              borderColor: theme.cardBorder,
+            }}
+            className="border p-4 rounded-2xl flex-row items-start mb-3 shadow-sm"
+          >
+            <View style={{ backgroundColor: theme.primaryLight }} className="p-2 rounded-xl mr-3">
+              <Zap size={18} color={theme.primary} />
             </View>
             <View className="flex-1">
-              <Text className="text-white font-bold text-sm">{t('pixelDestruction')}</Text>
-              <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
+              <Text style={{ color: theme.text }} className="font-bold text-sm">{t('pixelDestruction')}</Text>
+              <Text style={{ color: theme.textSecondary }} className="text-xs mt-0.5 leading-relaxed">
                 {t('pixelDestructionDesc')}
               </Text>
             </View>
           </View>
 
-          <View className="bg-slate-900/60 border border-slate-800/80 p-4 rounded-2xl flex-row items-start mb-3">
-            <View className="bg-emerald-500/10 p-2 rounded-xl mr-3">
-              <ShieldCheck size={18} color="#34D399" />
+          <View
+            style={{
+              backgroundColor: theme.card,
+              borderColor: theme.cardBorder,
+            }}
+            className="border p-4 rounded-2xl flex-row items-start shadow-sm"
+          >
+            <View style={{ backgroundColor: theme.successLight }} className="p-2 rounded-xl mr-3">
+              <ShieldCheck size={18} color={theme.success} />
             </View>
             <View className="flex-1">
-              <Text className="text-white font-bold text-sm">{t('offlineOcr')}</Text>
-              <Text className="text-slate-400 text-xs mt-0.5 leading-relaxed">
+              <Text style={{ color: theme.text }} className="font-bold text-sm">{t('offlineOcr')}</Text>
+              <Text style={{ color: theme.textSecondary }} className="text-xs mt-0.5 leading-relaxed">
                 {t('offlineOcrDesc')}
               </Text>
             </View>

@@ -7,16 +7,17 @@ import {
   ArrowRight,
   Sparkles,
   Sliders,
-  CheckCircle2,
   Lock,
 } from 'lucide-react-native';
 import { useRedactStore, RedactStyle } from '../src/store/useRedactStore';
 import { RedactionBox } from '../src/components/RedactionBox';
 import { PaywallModal } from '../src/components/PaywallModal';
+import { useTheme } from '../src/theme/useTheme';
 import { t } from '../src/i18n';
 
 export default function CensorScreen() {
   const router = useRouter();
+  const theme = useTheme();
   const {
     imageUri,
     regions,
@@ -66,10 +67,16 @@ export default function CensorScreen() {
   const activeCount = regions.filter((r) => r.isRedacted).length;
 
   return (
-    <View className="flex-1 bg-slate-950 px-5">
+    <View style={{ flex: 1, backgroundColor: theme.background }} className="px-5">
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
         {/* Document Thumbnail Preview */}
-        <View className="w-full h-48 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden my-4 relative justify-center items-center">
+        <View
+          style={{
+            backgroundColor: theme.card,
+            borderColor: theme.cardBorder,
+          }}
+          className="w-full h-48 border rounded-2xl overflow-hidden my-4 relative justify-center items-center shadow-sm"
+        >
           <Image source={{ uri: imageUri }} className="w-full h-full" resizeMode="contain" />
           <View className="absolute top-2 right-2 bg-black/75 px-2.5 py-1 rounded-full border border-slate-700">
             <Text className="text-white text-[10px] font-mono">
@@ -82,37 +89,47 @@ export default function CensorScreen() {
         <TouchableOpacity
           onPress={handleAutoRedact}
           activeOpacity={0.8}
-          className="bg-gradient-to-r from-rose-950 to-slate-900 border border-rose-900/60 p-4 rounded-2xl mb-4 flex-row items-center justify-between"
+          style={{
+            backgroundColor: theme.primaryLight,
+            borderColor: theme.primaryBorder,
+          }}
+          className="border p-4 rounded-2xl mb-4 flex-row items-center justify-between shadow-sm"
         >
           <View className="flex-row items-center flex-1 mr-3">
-            <View className="bg-rose-500/20 p-2 rounded-xl mr-2.5">
-              <Sparkles size={18} color="#FB7185" />
+            <View style={{ backgroundColor: theme.primaryLight }} className="p-2 rounded-xl mr-2.5">
+              <Sparkles size={18} color={theme.primary} />
             </View>
             <View className="flex-1">
-              <Text className="text-white font-bold text-sm">{t('autoRedactTitle')}</Text>
-              <Text className="text-rose-200/70 text-xs mt-0.5">
+              <Text style={{ color: theme.text }} className="font-bold text-sm">{t('autoRedactTitle')}</Text>
+              <Text style={{ color: theme.textSecondary }} className="text-xs mt-0.5">
                 {t('autoRedactDesc')}
               </Text>
             </View>
           </View>
 
           {!isPro ? (
-            <View className="bg-amber-500/20 px-2 py-1 rounded-lg flex-row items-center">
-              <Lock size={12} color="#F59E0B" />
-              <Text className="text-amber-400 text-[10px] font-bold ml-1">{t('proBadge')}</Text>
+            <View style={{ backgroundColor: theme.warningLight }} className="px-2.5 py-1 rounded-lg flex-row items-center border border-amber-500/30">
+              <Lock size={12} color={theme.warning} />
+              <Text style={{ color: theme.warning }} className="text-[10px] font-bold ml-1">{t('proBadge')}</Text>
             </View>
           ) : (
-            <View className="bg-rose-600 px-3 py-1 rounded-lg">
-              <Text className="text-white text-xs font-bold">{t('apply')}</Text>
+            <View style={{ backgroundColor: theme.primary }} className="px-3 py-1.5 rounded-lg">
+              <Text style={{ color: theme.onPrimary }} className="text-xs font-bold">{t('apply')}</Text>
             </View>
           )}
         </TouchableOpacity>
 
         {/* Censor Aesthetic Selector */}
-        <View className="bg-slate-900 border border-slate-800 p-4 rounded-2xl mb-5">
+        <View
+          style={{
+            backgroundColor: theme.card,
+            borderColor: theme.cardBorder,
+          }}
+          className="border p-4 rounded-2xl mb-5 shadow-sm"
+        >
           <View className="flex-row items-center mb-3">
-            <Sliders size={16} color="#FB7185" />
-            <Text className="text-white font-bold text-sm ml-2">{t('censorAesthetic')}</Text>
+            <Sliders size={16} color={theme.primary} />
+            <Text style={{ color: theme.text }} className="font-bold text-sm ml-2">{t('censorAesthetic')}</Text>
           </View>
           <View className="flex-row space-x-2">
             {styles.map((s) => {
@@ -121,17 +138,23 @@ export default function CensorScreen() {
                 <TouchableOpacity
                   key={s.id}
                   onPress={() => handleSelectStyle(s.id, s.isProOnly)}
-                  className={`flex-1 p-2.5 rounded-xl border items-center mr-1 ${
-                    isSelected ? 'bg-rose-950/40 border-rose-500' : 'bg-slate-950 border-slate-800'
-                  }`}
+                  hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+                  style={{
+                    backgroundColor: isSelected ? theme.primaryLight : theme.surface,
+                    borderColor: isSelected ? theme.primary : theme.cardBorder,
+                  }}
+                  className="flex-1 p-2.5 rounded-xl border items-center mr-1"
                 >
-                  <Text className={`text-xs font-bold ${isSelected ? 'text-rose-400' : 'text-slate-400'}`}>
+                  <Text
+                    style={{ color: isSelected ? theme.primary : theme.textSecondary }}
+                    className="text-xs font-bold"
+                  >
                     {s.label}
                   </Text>
                   {s.isProOnly && !isPro && (
                     <View className="mt-1 flex-row items-center">
-                      <Lock size={10} color="#F59E0B" />
-                      <Text className="text-amber-400 text-[8px] font-bold ml-0.5">{t('proBadge')}</Text>
+                      <Lock size={10} color={theme.warning} />
+                      <Text style={{ color: theme.warning }} className="text-[8px] font-bold ml-0.5">{t('proBadge')}</Text>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -142,7 +165,7 @@ export default function CensorScreen() {
 
         {/* Detected PII Entity Regions List */}
         <View className="mb-6">
-          <Text className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+          <Text style={{ color: theme.textMuted }} className="text-xs font-bold uppercase tracking-wider mb-3">
             {t('detectedEntities', { count: regions.length })}
           </Text>
 
@@ -159,13 +182,22 @@ export default function CensorScreen() {
         <TouchableOpacity
           onPress={handleProceed}
           activeOpacity={0.85}
-          className="bg-rose-600 active:bg-rose-500 p-4 rounded-2xl flex-row items-center justify-center shadow-lg shadow-rose-500/20"
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          style={{
+            backgroundColor: theme.primary,
+            shadowColor: theme.primary,
+            shadowOffset: { width: 0, height: 6 },
+            shadowOpacity: 0.35,
+            shadowRadius: 10,
+            elevation: 6,
+          }}
+          className="p-4 rounded-2xl flex-row items-center justify-center min-h-[52px]"
         >
-          <ShieldAlert size={20} color="#FFFFFF" />
-          <Text className="text-white font-bold text-base ml-2 mr-2">
+          <ShieldAlert size={20} color={theme.onPrimary} />
+          <Text style={{ color: theme.onPrimary }} className="font-bold text-base ml-2 mr-2">
             {t('burnAndFlatten', { count: activeCount })}
           </Text>
-          <ArrowRight size={18} color="#FFFFFF" />
+          <ArrowRight size={18} color={theme.onPrimary} />
         </TouchableOpacity>
       </ScrollView>
 

@@ -5,12 +5,14 @@ import { TouchableOpacity, Text } from 'react-native';
 import { Crown } from 'lucide-react-native';
 import { initPurchases, checkIsPro } from '../src/services/purchases';
 import { useRedactStore } from '../src/store/useRedactStore';
+import { useTheme } from '../src/theme/useTheme';
 import { t } from '../src/i18n';
 import '../global.css';
 
 export default function RootLayout() {
   const router = useRouter();
   const { isPro, setIsPro } = useRedactStore();
+  const theme = useTheme();
 
   useEffect(() => {
     initPurchases();
@@ -19,21 +21,28 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style={theme.statusBarStyle} />
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: '#020617' },
-          headerTintColor: '#ffffff',
+          headerStyle: { backgroundColor: theme.headerBackground },
+          headerTintColor: theme.headerTintColor,
           headerTitleStyle: { fontWeight: '700' },
-          contentStyle: { backgroundColor: '#020617' },
+          contentStyle: { backgroundColor: theme.background },
           headerRight: () =>
             !isPro ? (
               <TouchableOpacity
                 onPress={() => router.push('/paywall')}
-                className="bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-full flex-row items-center"
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                style={{
+                  backgroundColor: theme.warningLight,
+                  borderColor: theme.warning,
+                }}
+                className="border px-3 py-1.5 rounded-full flex-row items-center"
               >
-                <Crown size={14} color="#F59E0B" />
-                <Text className="text-amber-400 text-xs font-bold ml-1.5">{t('proBadge')}</Text>
+                <Crown size={14} color={theme.warning} />
+                <Text style={{ color: theme.warning }} className="text-xs font-bold ml-1.5">
+                  {t('proBadge')}
+                </Text>
               </TouchableOpacity>
             ) : null,
         }}

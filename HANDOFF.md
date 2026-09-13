@@ -31,7 +31,7 @@
 * [x] Configured automated release pipeline in `.github/workflows/deploy.yml`
 
 ### In-Progress Tasks (Interrupt State)
-None. App 4 (RedactPro) is certified and ready for submission.
+UI and device-level verification remain open. App Store Connect and Google Play provisioning are intentionally delegated to the owner.
 
 ### Next Immediate Steps (Action Plan for Resuming Agent)
 1. Transition to App 5: ScribeZero (`~/Dev/scribezero`).
@@ -42,7 +42,7 @@ None. App 4 (RedactPro) is certified and ready for submission.
 * Android Simulator Build: PASSING (Production bundle compiled cleanly)
 * RevenueCat Entitlement Check: VERIFIED (Entitlement `pro` mapped to Lifetime Package)
 * TypeScript Typecheck: PASSING (0 errors)
-* Blockers / Outstanding Issues: None
+* Blockers / Outstanding Issues: Physical device/simulator interaction, zero-console-error QA, and store provisioning remain unverified.
 
 ## Verification Update — 2026-09-13
 
@@ -55,5 +55,7 @@ None. App 4 (RedactPro) is certified and ready for submission.
 * RevenueCat: PASS for project `proj108442be`; current iOS/Android apps, `pro` entitlement, and `$rc_lifetime` package are present with the $8.99 lifetime product. The custom native paywall is intentionally retained; RevenueCat verification's `offering has no attached paywall` is expected for this architecture.
 * Store provisioning: BLOCKED — App Store Connect exposes only HushTunnel and the CLI cannot create apps; Google Play API access returns `403 SERVICE_DISABLED` for the Reporting API. RedactPro store records and price schedules are therefore not verified.
 * Physical simulator/emulator interaction and zero-console-error QA: NOT RUN in this pass.
-* Existing uncommitted RedactPro source/config changes were preserved for review.
-* Next action: configure the repository secret, dispatch the workflow, and verify the resulting iOS/TestFlight, Android/Play, and GitHub Release statuses.
+* Existing RedactPro source/config changes were reviewed and completed with semantic light/dark theme tokens for all view-level colors and accessible primary controls.
+* CI-equivalent validation after dependency installation: `rtk npm ci --legacy-peer-deps`, `rtk npm run typecheck`, `rtk npm run export:ios`, and `rtk npm run export:android` all PASS. The two platform exports ran concurrently.
+* Remaining validation: run the app on iOS Simulator and Android emulator/physical devices, exercise import/camera, OCR results, redaction toggles, export/share/save, and purchase/restore failure states, then check for console exceptions.
+* Store provisioning remains owner-managed. The workflow uses the `PLAY_STORE_SERVICE_ACCOUNT_JSON` repository secret when Play publishing is enabled.
