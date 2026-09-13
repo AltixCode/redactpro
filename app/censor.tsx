@@ -87,8 +87,8 @@ export default function CensorScreen() {
             regions={regions}
             style={redactStyle}
           />
-          <View className="absolute top-2 right-2 bg-black/75 px-2.5 py-1 rounded-full border border-slate-700">
-            <Text className="text-white text-[10px] font-mono">
+          <View className="absolute top-2 right-2 bg-black/75 px-2.5 py-1 rounded-full border" style={{ borderColor: theme.cardBorder }}>
+            <Text className="text-[10px] font-mono" style={{ color: theme.text }}>
               {t('activeRedactions', { count: activeCount })}
             </Text>
           </View>
