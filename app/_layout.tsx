@@ -29,18 +29,22 @@ export default function RootLayout() {
           headerTitleStyle: { fontWeight: '700' },
           contentStyle: { backgroundColor: theme.background },
           headerRight: () =>
+            // No background or border of our own: iOS 26+ already draws a
+            // container behind header bar items, and adding one produced a
+            // visible double border.
             !isPro ? (
               <TouchableOpacity
                 onPress={() => router.push('/paywall')}
-                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-                style={{
-                  backgroundColor: theme.warningLight,
-                  borderColor: theme.warning,
-                }}
-                className="border px-3 py-1.5 rounded-full flex-row items-center"
+                accessibilityRole="button"
+                accessibilityLabel={t('paywallTitle')}
+                hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+                className="flex-row items-center px-1 py-1"
               >
-                <Crown size={14} color={theme.warning} />
-                <Text style={{ color: theme.warning }} className="text-xs font-bold ml-1.5">
+                <Crown size={15} color={theme.warning} />
+                <Text
+                  style={{ color: theme.warning }}
+                  className="ml-1.5 text-xs font-bold"
+                >
                   {t('proBadge')}
                 </Text>
               </TouchableOpacity>
@@ -73,6 +77,9 @@ export default function RootLayout() {
           options={{
             title: t('paywallTitle'),
             presentation: 'modal',
+            // Inherited from screenOptions otherwise, which let the paywall
+            // push another copy of itself without limit.
+            headerRight: () => null,
           }}
         />
       </Stack>

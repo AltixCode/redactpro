@@ -99,7 +99,7 @@ export default function PaywallScreen() {
         </View>
 
         {/* Features List */}
-        <View className="space-y-4 mb-6">
+        <View className="flex-col gap-4 mb-6">
           {features.map((f, i) => (
             <View key={i} className="flex-row items-start mb-4">
               <View
@@ -153,7 +153,7 @@ export default function PaywallScreen() {
           )}
         </TouchableOpacity>
 
-        <View className="flex-row items-center justify-center space-x-6 mt-4">
+        <View className="flex-row items-center justify-center gap-6 mt-4">
           <TouchableOpacity
             onPress={handleRestore}
             disabled={loading}

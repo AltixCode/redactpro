@@ -140,7 +140,7 @@ export default function CensorScreen() {
             <Sliders size={16} color={theme.primary} />
             <Text style={{ color: theme.text }} className="font-bold text-sm ml-2">{t('censorAesthetic')}</Text>
           </View>
-          <View className="flex-row space-x-2">
+          <View className="flex-row gap-2">
             {styles.map((s) => {
               const isSelected = redactStyle === s.id;
               return (

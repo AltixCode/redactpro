@@ -171,7 +171,7 @@ export default function HomeScreen() {
             </Text>
           </View>
         ) : (
-          <View className="space-y-3 mb-6">
+          <View className="flex-col gap-3 mb-6">
             <TouchableOpacity
               onPress={handlePickImage}
               activeOpacity={0.85}
@@ -245,7 +245,7 @@ export default function HomeScreen() {
         )}
 
         {/* Security & Architectural Guarantees */}
-        <View className="mt-4 space-y-3">
+        <View className="mt-4 flex-col gap-3">
           <Text
             style={{ color: theme.textMuted }}
             className="text-xs font-bold uppercase tracking-wider mb-2"

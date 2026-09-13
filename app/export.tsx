@@ -156,7 +156,7 @@ export default function ExportScreen() {
           </View>
 
           {/* Action Buttons */}
-          <View className="w-full space-y-3 mb-6">
+          <View className="w-full flex-col gap-3 mb-6">
             <TouchableOpacity
               onPress={handleShare}
               activeOpacity={0.85}
