@@ -7,6 +7,9 @@ name: Redact a statement end to end
 #
 # Selectors are wrapped in .* because iOS composes one accessibility label per
 # pressable from all of its child Text nodes, so an exact title never matches.
+# They are also anchored on button copy rather than loose words: matching
+# ".*Export.*" silently hit the "Preserved in export" row of the entity list and
+# toggled that entity instead of advancing.
 - launchApp:
     clearState: false
 # A debug build launches through its dev-client deep link, so iOS raises an
@@ -24,14 +27,46 @@ name: Redact a statement end to end
 - extendedWaitUntil:
     visible: ".*(Recents|Photos|All Photos|Library).*"
     timeout: 25000
-- takeScreenshot: artifacts/02-picker
 
-# The fixture is the only added image and sits first in the grid; the rest are
-# the simulator's stock wallpapers.
+# Select the fixture by its accessibility label rather than a coordinate: the
+# picker grid starts below the segmented control, and a percentage tap that
+# looks correct on screen lands in the header. The pattern matches a single
+# cell ("Photo, <date>, <time>") and not the grid container, whose label is
+# every cell's label concatenated.
 - tapOn:
-    point: "8%,14%"
+    text: "Photo, [^,]+, [^,]+"
+    index: 0
 
 - extendedWaitUntil:
-    visible: ".*Export.*"
+    visible: ".*Review Redactions.*"
     timeout: 60000
-- takeScreenshot: artifacts/03-detected
+# The fixture plants exactly one of each; anything missing is a detector
+# regression, not a flaky selector.
+- assertVisible: ".*EMAIL.*"
+- assertVisible: ".*PHONE.*"
+- assertVisible: ".*CARD.*"
+- assertVisible: ".*IBAN.*"
+- takeScreenshot: artifacts/02-detected
+
+- scrollUntilVisible:
+    element:
+      text: ".*Burn & Flatten.*"
+    direction: DOWN
+    timeout: 20000
+- tapOn: ".*Burn & Flatten.*"
+
+- extendedWaitUntil:
+    visible: ".*Share Redacted Image.*"
+    timeout: 60000
+- takeScreenshot: artifacts/03-exported
+
+# Save to the camera roll so the written file can be pulled off the simulator
+# and inspected. The on-screen preview is not proof: the defect this app
+# shipped with was an export path that ignored its redactions entirely while
+# the preview looked correct.
+- tapOn: ".*(Save to Camera Roll|Save to Photos).*"
+- extendedWaitUntil:
+    visible: ".*OK.*"
+    timeout: 30000
+- tapOn: ".*OK.*"
+- takeScreenshot: artifacts/04-saved

@@ -88,8 +88,12 @@ export function useRedactionComposer() {
       );
 
       const uri = await captureRef(shotRef, {
-        width: state.outputWidth,
-        height: state.outputHeight,
+        // captureRef's width/height are in points and get multiplied by the
+        // screen density to produce the raster, so passing pixel values yields
+        // an image `density` times too large: a 2000px export came out 6000px.
+        // Passing points lands the output on exactly the requested pixels.
+        width: state.outputWidth / density,
+        height: state.outputHeight / density,
         format: "jpg",
         quality: 0.92,
         result: "tmpfile",
