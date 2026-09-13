@@ -1,0 +1,42 @@
+appId: com.altixcode.redactpro
+name: Store screenshots
+---
+# Driven over the real fixture so the detected-entity list and the blacked-out
+# export are genuine product state. A listing that shows an empty import screen
+# demonstrates nothing, and Apple rejects shots that do not match the build.
+- launchApp:
+    clearState: true
+- waitForAnimationToEnd:
+    timeout: 8000
+- takeScreenshot: 01-hero
+
+- tapOn: ".*Import Screenshot or Photo.*"
+- extendedWaitUntil:
+    visible:
+      id: "photosView_content_scroll_view"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 8000
+- tapOn:
+    text: "Photo, [^,]+, [^,]+"
+    index: 0
+- extendedWaitUntil:
+    visible: ".*Review Redactions.*"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 02-detected
+
+- scrollUntilVisible:
+    element:
+      text: ".*Burn & Flatten.*"
+    direction: DOWN
+    timeout: 20000
+- takeScreenshot: 03-styles
+- tapOn: ".*Burn & Flatten.*"
+- extendedWaitUntil:
+    visible: ".*Share Redacted Image.*"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 04-exported
