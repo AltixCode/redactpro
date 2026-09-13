@@ -69,6 +69,7 @@ export const translations = {
     "offlineOcr": "100% Offline OCR",
     "offlineOcrDesc": "Optical character recognition runs entirely on local device hardware. Your private files never touch any external server.",
     "activeRedactions": "{count} active redactions",
+    "activeRedactions_one": "1 active redaction",
     "autoRedactTitle": "Auto-Redact All Detected PII",
     "autoRedactDesc": "Automatically black out all payment cards, IBANs & phones",
     "censorAesthetic": "Redaction Aesthetic",
@@ -77,6 +78,7 @@ export const translations = {
     "invertedWhite": "Inverted White",
     "detectedEntities": "Detected Sensitive Entities ({count})",
     "burnAndFlatten": "Burn & Flatten {count} Redactions",
+    "burnAndFlatten_one": "Burn & Flatten 1 Redaction",
     "card": "Card",
     "iban": "IBAN",
     "email": "Email",
@@ -158,6 +160,7 @@ export const translations = {
     "offlineOcr": "OCR 100% Fuera de Línea",
     "offlineOcrDesc": "El reconocimiento óptico se ejecuta íntegramente en el hardware local. Sus archivos nunca tocan ningún servidor externo.",
     "activeRedactions": "{count} censuras activas",
+    "activeRedactions_one": "1 censura activa",
     "autoRedactTitle": "Auto-Censurar Toda la PII Detectada",
     "autoRedactDesc": "Oculte automáticamente tarjetas de pago, IBANs y teléfonos",
     "censorAesthetic": "Estilo de Censura",
@@ -166,6 +169,7 @@ export const translations = {
     "invertedWhite": "Blanco Invertido",
     "detectedEntities": "Entidades Sensibles Detectadas ({count})",
     "burnAndFlatten": "Incrustar y Aplanar {count} Censuras",
+    "burnAndFlatten_one": "Fijar y aplanar 1 censura",
     "card": "Tarjeta",
     "iban": "IBAN",
     "email": "Correo",
@@ -247,6 +251,7 @@ export const translations = {
     "offlineOcr": "OCR 100% Hors Ligne",
     "offlineOcrDesc": "La reconnaissance optique de caractères tourne intégralement sur l'appareil. Vos fichiers confidentiels ne transitent par aucun serveur.",
     "activeRedactions": "{count} masquages actifs",
+    "activeRedactions_one": "1 caviardage actif",
     "autoRedactTitle": "Masquer Toutes les Données Détectées",
     "autoRedactDesc": "Masquez automatiquement cartes bancaires, IBAN et téléphones",
     "censorAesthetic": "Esthétique du Masquage",
@@ -255,6 +260,7 @@ export const translations = {
     "invertedWhite": "Blanc Inversé",
     "detectedEntities": "Données Sensibles Détectées ({count})",
     "burnAndFlatten": "Incruster & Aplatir {count} Masquages",
+    "burnAndFlatten_one": "Graver et aplatir 1 caviardage",
     "card": "Carte",
     "iban": "IBAN",
     "email": "Courriel",
@@ -336,6 +342,7 @@ export const translations = {
     "offlineOcr": "100% Offline-OCR",
     "offlineOcrDesc": "Texterkennung läuft vollständig auf lokaler Geräte-Hardware. Ihre vertraulichen Daten berühren niemals einen Server.",
     "activeRedactions": "{count} aktive Schwärzungen",
+    "activeRedactions_one": "1 aktive Schwärzung",
     "autoRedactTitle": "Alle Erkannten Daten Schwärzen",
     "autoRedactDesc": "Kreditkarten, IBANs und Telefonnummern automatisch unkenntlich machen",
     "censorAesthetic": "Schwärzungs-Stil",
@@ -344,6 +351,7 @@ export const translations = {
     "invertedWhite": "Invertiertes Weiß",
     "detectedEntities": "Erkannte Sensible Daten ({count})",
     "burnAndFlatten": "{count} Schwärzungen Einbrennen & Reduzieren",
+    "burnAndFlatten_one": "1 Schwärzung einbrennen",
     "card": "Karte",
     "iban": "IBAN",
     "email": "E-Mail",
@@ -425,6 +433,7 @@ export const translations = {
     "offlineOcr": "100% Автономное OCR",
     "offlineOcrDesc": "Распознавание выполняется целиком на процессоре вашего устройства. Файлы никогда не отправляются на серверы.",
     "activeRedactions": "{count} скрытых областей",
+    "activeRedactions_one": "1 активное затемнение",
     "autoRedactTitle": "Автоскрытие Всех Найденных Данных",
     "autoRedactDesc": "Автоматически закрасить все номера карт, счетов и телефонов",
     "censorAesthetic": "Стиль Закрашивания",
@@ -433,6 +442,7 @@ export const translations = {
     "invertedWhite": "Белая Заливка",
     "detectedEntities": "Найденные Личные Данные ({count})",
     "burnAndFlatten": "Запечь & Объединить {count} Областей",
+    "burnAndFlatten_one": "Впечатать 1 затемнение",
     "card": "Карта",
     "iban": "Счет",
     "email": "Email",
@@ -514,6 +524,7 @@ export const translations = {
     "offlineOcr": "100% 离线OCR识别",
     "offlineOcrDesc": "文字识别完全在本地硬件芯片运行，您的绝密文件绝不上传任何外部服务器。",
     "activeRedactions": "{count} 个生效遮蔽",
+    "activeRedactions_one": "1 处生效遮盖",
     "autoRedactTitle": "一键自动遮盖全部敏感信息",
     "autoRedactDesc": "全自动遮盖所有识别出的银行卡、账号与手机号",
     "censorAesthetic": "遮蔽视觉风格",
@@ -522,6 +533,7 @@ export const translations = {
     "invertedWhite": "反色白块",
     "detectedEntities": "已识别敏感条目 ({count})",
     "burnAndFlatten": "烧录并压平 {count} 处遮盖",
+    "burnAndFlatten_one": "烧录并拼合 1 处遮盖",
     "card": "银行卡",
     "iban": "账号",
     "email": "邮箱",
@@ -603,6 +615,7 @@ export const translations = {
     "offlineOcr": "100% オフラインOCR",
     "offlineOcrDesc": "文字認識処理はすべて端末ハードウェア上で実行。機密ファイルが外部サーバーに送られることは一切ありません。",
     "activeRedactions": "{count}件の有効な墨消し",
+    "activeRedactions_one": "有効な墨消し 1 件",
     "autoRedactTitle": "検出された個人情報を一括墨消し",
     "autoRedactDesc": "カード番号、口座番号、電話番号を自動で黒塗り",
     "censorAesthetic": "墨消しデザイン",
@@ -611,6 +624,7 @@ export const translations = {
     "invertedWhite": "反転ホワイト",
     "detectedEntities": "検出された機密情報 ({count})",
     "burnAndFlatten": "{count}箇所の墨消しを焼き込み・統合",
+    "burnAndFlatten_one": "1 件の墨消しを焼き込む",
     "card": "カード",
     "iban": "口座番号",
     "email": "メール",
@@ -692,6 +706,7 @@ export const translations = {
     "offlineOcr": "OCR 100% Offline",
     "offlineOcrDesc": "O reconhecimento de texto roda inteiramente no hardware local. Seus arquivos confidenciais nunca tocam servidores externos.",
     "activeRedactions": "{count} tarjas ativas",
+    "activeRedactions_one": "1 censura ativa",
     "autoRedactTitle": "Ocultar Automaticamente Todos os Dados",
     "autoRedactDesc": "Aplique tarja preta automática em cartões, contas e telefones",
     "censorAesthetic": "Estilo de Ocultação",
@@ -700,6 +715,7 @@ export const translations = {
     "invertedWhite": "Branco Invertido",
     "detectedEntities": "Dados Sensíveis Detectados ({count})",
     "burnAndFlatten": "Fixar e Mesclar {count} Tarjas",
+    "burnAndFlatten_one": "Gravar e aplanar 1 censura",
     "card": "Cartão",
     "iban": "Conta",
     "email": "E-mail",
@@ -781,6 +797,7 @@ export const translations = {
     "offlineOcr": "100% 오프라인 OCR",
     "offlineOcrDesc": "문자 인식이 기기 내부 프로세서에서만 실행됩니다. 외부 서버로 파일이 전송되지 않습니다.",
     "activeRedactions": "{count}개 활성 마스킹",
+    "activeRedactions_one": "활성 가림 1개",
     "autoRedactTitle": "감지된 모든 개인정보 자동 가림",
     "autoRedactDesc": "카드 번호, 계좌, 전화번호를 한 번에 검게 처리",
     "censorAesthetic": "마스킹 스타일",
@@ -789,6 +806,7 @@ export const translations = {
     "invertedWhite": "반전 화이트",
     "detectedEntities": "감지된 민감 정보 ({count})",
     "burnAndFlatten": "{count}개 마스킹 픽셀 병합",
+    "burnAndFlatten_one": "가림 1개 굽기 및 병합",
     "card": "카드",
     "iban": "계좌",
     "email": "이메일",
@@ -870,6 +888,7 @@ export const translations = {
     "offlineOcr": "OCR 100% Offline",
     "offlineOcrDesc": "Il riconoscimento del testo opera per intero sull'hardware locale. I file privati non transitano mai su server esterni.",
     "activeRedactions": "{count} oscuramenti attivi",
+    "activeRedactions_one": "1 oscuramento attivo",
     "autoRedactTitle": "Auto-Oscura Tutti i Dati Rilevati",
     "autoRedactDesc": "Copri automaticamente carte di credito, IBAN e numeri di telefono",
     "censorAesthetic": "Stile di Oscuramento",
@@ -878,6 +897,7 @@ export const translations = {
     "invertedWhite": "Bianco Invertito",
     "detectedEntities": "Dati Sensibili Rilevati ({count})",
     "burnAndFlatten": "Applica & Unisci {count} Oscuramenti",
+    "burnAndFlatten_one": "Applica e appiattisci 1 oscuramento",
     "card": "Carta",
     "iban": "IBAN",
     "email": "Email",
@@ -959,6 +979,7 @@ export const translations = {
     "offlineOcr": "%100 Çevrimdışı OCR",
     "offlineOcrDesc": "Karakter tanıma tamamen yerel donanımda çalışır. Gizli belgeleriniz asla harici sunuculara yüklenmez.",
     "activeRedactions": "{count} etkin karartma",
+    "activeRedactions_one": "1 etkin sansür",
     "autoRedactTitle": "Algılanan Tüm Verileri Otomatik Karart",
     "autoRedactDesc": "Kredi kartlarını, IBAN'ları ve telefonları anında siyah bantla kapatın",
     "censorAesthetic": "Karartma Tarzı",
@@ -967,6 +988,7 @@ export const translations = {
     "invertedWhite": "Ters Beyaz",
     "detectedEntities": "Algılanan Hassas Veriler ({count})",
     "burnAndFlatten": "{count} Sansürü Sayfaya Göm ve Düzleştir",
+    "burnAndFlatten_one": "1 sansürü gömerek düzleştir",
     "card": "Kart",
     "iban": "IBAN",
     "email": "E-posta",
@@ -1048,6 +1070,7 @@ export const translations = {
     "offlineOcr": "تعرف ضوئي 100% بدون إنترنت",
     "offlineOcrDesc": "يعمل التعرف على النصوص بالكامل على معالج جهازك المحلي. مستنداتك السرية لا تمس أي خادم خارجي.",
     "activeRedactions": "{count} مناطق حجب نشطة",
+    "activeRedactions_one": "حجب واحد نشط",
     "autoRedactTitle": "حجب تلقائي لجميع البيانات المكتشفة",
     "autoRedactDesc": "تسويد أرقام البطاقات المصرفية والحسابات والهواتف بنقرة واحدة",
     "censorAesthetic": "نمط التعتيم",
@@ -1056,6 +1079,7 @@ export const translations = {
     "invertedWhite": "أبيض معكوس",
     "detectedEntities": "البيانات الحساسة المكتشفة ({count})",
     "burnAndFlatten": "دمج وتسطيح {count} مناطق تعتيم",
+    "burnAndFlatten_one": "دمج وتسطيح حجب واحد",
     "card": "بطاقة",
     "iban": "حساب",
     "email": "إيميل",
@@ -1129,9 +1153,34 @@ export function isRTL(): boolean {
   return currentLanguage === 'ar';
 }
 
+/**
+ * CLDR plural category for `count` in the active language, e.g. "one" or
+ * "other" in English, which also has "few"/"many" in Russian and Arabic.
+ *
+ * Falls back to an English-style one/other split where Intl.PluralRules is
+ * unavailable, which is still better than always rendering the plural form.
+ */
+function pluralCategory(count: number): string {
+  try {
+    return new Intl.PluralRules(currentLanguage).select(count);
+  } catch {
+    return count === 1 ? 'one' : 'other';
+  }
+}
+
 export function t(key: TranslationKey, params?: Record<string, string | number>): string {
   const langDict = (translations as any)[currentLanguage] || translations.en;
-  let text: string = langDict[key] || translations.en[key] || (key as string);
+  // A key may carry plural variants as suffixed siblings ("exportClips_one").
+  // Only keys that actually define one are affected; everything else resolves
+  // to the base key exactly as before.
+  let resolved: string = key as string;
+  if (params && typeof params.count === 'number') {
+    const variant = `${key}_${pluralCategory(params.count)}`;
+    if (langDict[variant] || (translations.en as any)[variant]) resolved = variant;
+  }
+  let text: string =
+    langDict[resolved] || (translations.en as any)[resolved] ||
+    langDict[key] || translations.en[key] || (key as string);
   if (params) {
     Object.entries(params).forEach(([k, v]) => {
       text = text.split('{' + k + '}').join(String(v));
