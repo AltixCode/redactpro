@@ -50,7 +50,7 @@ None. App 4 (RedactPro) is certified and ready for submission.
 * TypeScript: PASS — `rtk pnpm typecheck`
 * Production exports: PASS — `rtk pnpm export:ios`, `rtk pnpm export:android`
 * Observed GitHub Actions runs after push: `34745142621 (queued); 34745169887 (pending)` for `AltixCode/redactpro`.
-* Workflow topology updated: iOS on `[self-hosted, macOS, ARM64]`; Android then GitHub Release on `[self-hosted, linux, x64]`; repository concurrency remains serialized.
+* Workflow topology updated: iOS on `[self-hosted, macOS, ARM64]` and Android on `[self-hosted, linux, x64]` run independently in parallel; GitHub Release waits for both; hosted runner choices are explicit backup dispatch options.
 * Google Play upload now requires the `PLAY_STORE_SERVICE_ACCOUNT_JSON` repository secret. Store status: UNKNOWN.
 * Physical simulator/emulator interaction and zero-console-error QA: NOT RUN in this pass.
 * Existing uncommitted RedactPro source/config changes were preserved for review.
