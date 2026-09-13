@@ -1,0 +1,6 @@
+[
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v23/abc_control_background_material.xml",
+        "source": "expo.modules.textscanner.text-scanner-appcompat-1.7.0-23:/drawable-v23/abc_control_background_material.xml"
+    }
+]

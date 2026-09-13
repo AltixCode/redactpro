@@ -1,0 +1,52 @@
+appId: com.altixcode.redactpro
+name: Redact a statement end to end (Android)
+---
+# Same contract as the iOS flow, against a different engine: text recognition
+# runs on ML Kit here, not Vision, so an iOS pass says nothing about this path.
+# The gate is still the exported bytes -- verify-redaction re-OCRs them and
+# fails if any planted value survives.
+- launchApp:
+    clearState: true
+- waitForAnimationToEnd:
+    timeout: 8000
+- assertVisible: "Permanent PII Blackout"
+- takeScreenshot: artifacts/android-01-home
+
+- tapOn: ".*Import Screenshot or Photo.*"
+# Anchor on the picker's own chrome: the app's own button text contains "Photo".
+- extendedWaitUntil:
+    visible: "Albums"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 6000
+# The emulator's library holds only this app's fixture.
+- tapOn:
+    point: "17%,41%"
+
+- extendedWaitUntil:
+    visible: ".*Review Redactions.*"
+    timeout: 60000
+- assertVisible: ".*EMAIL.*"
+- assertVisible: ".*PHONE.*"
+- assertVisible: ".*CARD.*"
+- assertVisible: ".*IBAN.*"
+- takeScreenshot: artifacts/android-02-detected
+
+- scrollUntilVisible:
+    element:
+      text: ".*Burn & Flatten.*"
+    direction: DOWN
+    timeout: 20000
+- tapOn: ".*Burn & Flatten.*"
+- extendedWaitUntil:
+    visible: ".*Share Redacted Image.*"
+    timeout: 60000
+- takeScreenshot: artifacts/android-03-exported
+- tapOn: ".*(Save to Camera Roll|Save to Photos).*"
+# Assert the success title, not an OK button: the permission-denied alert has
+# one too, and waiting on it stays green while nothing is written.
+- extendedWaitUntil:
+    visible: "Saved!"
+    timeout: 30000
+- tapOn: "OK"
+- takeScreenshot: artifacts/android-04-saved

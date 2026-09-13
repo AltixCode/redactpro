@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v21/abc_edit_text_material.xml",
+        "source": "expo.modules.textscanner.text-scanner-appcompat-1.7.0-23:/drawable-v21/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "expo.modules.textscanner.text-scanner-appcompat-1.7.0-23:/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v21/abc_list_divider_material.xml",
+        "source": "expo.modules.textscanner.text-scanner-appcompat-1.7.0-23:/drawable-v21/abc_list_divider_material.xml"
+    },
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v21/abc_btn_colored_material.xml",
+        "source": "expo.modules.textscanner.text-scanner-appcompat-1.7.0-23:/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v21/abc_dialog_material_background.xml",
+        "source": "expo.modules.textscanner.text-scanner-appcompat-1.7.0-23:/drawable-v21/abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "expo.modules.textscanner.text-scanner-release-3:/drawable-v21/notification_action_background.xml",
+        "source": "expo.modules.textscanner.text-scanner-core-1.17.0-19:/drawable-v21/notification_action_background.xml"
+    }
+]
