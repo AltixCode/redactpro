@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import React from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Linking,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import * as Haptics from 'expo-haptics';
 import {
   Sparkles,
   Zap,
@@ -12,56 +18,16 @@ import {
   X,
 } from 'lucide-react-native';
 import { useRedactStore } from '../src/store/useRedactStore';
-import { purchaseLifetime, restorePurchases } from '../src/services/purchases';
+import { usePaywall } from '../src/hooks/usePaywall';
+import { PRIVACY_POLICY_URL, TERMS_OF_USE_URL } from '../src/config/legal';
 import { useTheme } from '../src/theme/useTheme';
 import { t } from '../src/i18n';
 
 export default function PaywallScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const { setIsPro } = useRedactStore();
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const handlePurchase = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const success = await purchaseLifetime();
-      if (success) {
-        setIsPro(true);
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        router.back();
-      } else {
-        setErrorMsg(t('purchaseError'));
-      }
-    } catch {
-      setErrorMsg(t('unexpectedError'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRestore = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const success = await restorePurchases();
-      if (success) {
-        setIsPro(true);
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        router.back();
-      } else {
-        setErrorMsg(t('noPriorPurchases'));
-      }
-    } catch {
-      setErrorMsg(t('restoreError'));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { ctaLabel, loading, errorMsg, handlePurchase, handleRestore } =
+    usePaywall(() => router.back());
 
   const features = [
     {
@@ -180,7 +146,7 @@ export default function PaywallScreen() {
           ) : (
             <>
               <Text style={{ color: theme.onPrimary }} className="font-extrabold text-base mr-2">
-                {t('lifetimeAccess')}
+                {ctaLabel}
               </Text>
               <Check size={18} color={theme.onPrimary} strokeWidth={3} />
             </>
@@ -202,6 +168,27 @@ export default function PaywallScreen() {
             {t('oneTimePayment')}
           </Text>
         </View>
+        <View className="mt-3 flex-row items-center justify-center gap-5">
+          <TouchableOpacity
+            onPress={() => Linking.openURL(TERMS_OF_USE_URL)}
+            accessibilityRole="link"
+            hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+          >
+            <Text style={{ color: theme.textMuted }} className="text-xs underline">
+              {t('termsOfUse')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+            accessibilityRole="link"
+            hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+          >
+            <Text style={{ color: theme.textMuted }} className="text-xs underline">
+              {t('privacyPolicy')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     </View>
   );

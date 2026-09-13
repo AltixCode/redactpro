@@ -40,3 +40,10 @@ yarn-error.*
 /ios
 /android
 dist/
+
+# Agent tooling and QA output
+.claude/
+.agents/
+CLAUDE.md
+GEMINI.md
+artifacts/

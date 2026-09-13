@@ -1,0 +1,37 @@
+appId: com.altixcode.redactpro
+name: Redact a statement end to end
+---
+# Verifies the whole chain against a fixture with known values: text
+# recognition, pattern matching, box placement, and the burn-in that the
+# previous implementation skipped entirely.
+#
+# Selectors are wrapped in .* because iOS composes one accessibility label per
+# pressable from all of its child Text nodes, so an exact title never matches.
+- launchApp:
+    clearState: false
+# A debug build launches through its dev-client deep link, so iOS raises an
+# "Open in ..." confirmation that sits above the app and hides the accessibility
+# tree beneath it. Release builds do not show this.
+- runFlow:
+    when:
+      visible: "Open"
+    commands:
+      - tapOn: "Cancel"
+- assertVisible: "Permanent PII Blackout"
+- takeScreenshot: artifacts/01-home
+
+- tapOn: ".*Import Screenshot or Photo.*"
+- extendedWaitUntil:
+    visible: ".*(Recents|Photos|All Photos|Library).*"
+    timeout: 25000
+- takeScreenshot: artifacts/02-picker
+
+# The fixture is the only added image and sits first in the grid; the rest are
+# the simulator's stock wallpapers.
+- tapOn:
+    point: "8%,14%"
+
+- extendedWaitUntil:
+    visible: ".*Export.*"
+    timeout: 60000
+- takeScreenshot: artifacts/03-detected

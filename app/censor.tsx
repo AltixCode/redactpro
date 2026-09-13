@@ -13,6 +13,7 @@ import { useRedactStore, RedactStyle } from '../src/store/useRedactStore';
 import { RedactionBox } from '../src/components/RedactionBox';
 import { PaywallModal } from '../src/components/PaywallModal';
 import { useTheme } from '../src/theme/useTheme';
+import { RedactionPreview } from '../src/components/RedactionPreview';
 import { t } from '../src/i18n';
 
 export default function CensorScreen() {
@@ -20,6 +21,8 @@ export default function CensorScreen() {
   const theme = useTheme();
   const {
     imageUri,
+    imageWidth,
+    imageHeight,
     regions,
     redactStyle,
     isPro,
@@ -77,7 +80,13 @@ export default function CensorScreen() {
           }}
           className="w-full h-48 border rounded-2xl overflow-hidden my-4 relative justify-center items-center shadow-sm"
         >
-          <Image source={{ uri: imageUri }} className="w-full h-full" resizeMode="contain" />
+          <RedactionPreview
+            uri={imageUri}
+            imageWidth={imageWidth}
+            imageHeight={imageHeight}
+            regions={regions}
+            style={redactStyle}
+          />
           <View className="absolute top-2 right-2 bg-black/75 px-2.5 py-1 rounded-full border border-slate-700">
             <Text className="text-white text-[10px] font-mono">
               {t('activeRedactions', { count: activeCount })}

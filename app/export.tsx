@@ -1,42 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
-import * as Haptics from 'expo-haptics';
-import * as Sharing from 'expo-sharing';
+import React, { useEffect, useRef, useState } from "react";
 import {
-  ShieldCheck,
-  Share2,
-  Download,
-  RotateCcw,
-} from 'lucide-react-native';
-import { useRedactStore } from '../src/store/useRedactStore';
-import { rasterizeRedactions, saveToPhotos } from '../src/engine/rasterizer';
-import { PrivacyBadge } from '../src/components/PrivacyBadge';
-import { useTheme } from '../src/theme/useTheme';
-import { t } from '../src/i18n';
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { useRouter } from "expo-router";
+import * as Haptics from "expo-haptics";
+import * as Sharing from "expo-sharing";
+import { ShieldCheck, Share2, Download, RotateCcw } from "lucide-react-native";
+import { useRedactStore } from "../src/store/useRedactStore";
+import { persistRedactedImage, saveToPhotos } from "../src/engine/rasterizer";
+import { useRedactionComposer } from "../src/engine/redactionComposer";
+import { PrivacyBadge } from "../src/components/PrivacyBadge";
+import { useTheme } from "../src/theme/useTheme";
+import { t } from "../src/i18n";
 
 export default function ExportScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const { imageUri, regions, redactStyle, exportedUri, setExportedUri, reset } = useRedactStore();
+  const {
+    imageUri,
+    imageWidth,
+    imageHeight,
+    regions,
+    redactStyle,
+    exportedUri,
+    setExportedUri,
+    reset,
+  } = useRedactStore();
+
+  const { ComposerPortal, compose } = useRedactionComposer();
+  const composeRef = useRef(compose);
+  composeRef.current = compose;
 
   const [loading, setLoading] = useState(true);
   const [savedToRoll, setSavedToRoll] = useState(false);
 
   useEffect(() => {
     if (!imageUri) {
-      router.replace('/');
+      router.replace("/");
       return;
     }
 
     const runRasterization = async () => {
       try {
         setLoading(true);
-        const resultPath = await rasterizeRedactions(imageUri, regions, redactStyle);
+        const composedUri = await composeRef.current({
+          uri: imageUri,
+          imageWidth,
+          imageHeight,
+          regions,
+          style: redactStyle,
+        });
+        const resultPath = await persistRedactedImage(composedUri);
         setExportedUri(resultPath);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      } catch (err: any) {
-        Alert.alert(t('exportError'), err?.message || t('exportErrorDesc'));
+      } catch (err) {
+        Alert.alert(
+          t("exportError"),
+          (err as { message?: string })?.message || t("exportErrorDesc"),
+        );
       } finally {
         setLoading(false);
       }
@@ -60,9 +86,9 @@ export default function ExportScreen() {
       if (success) {
         setSavedToRoll(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        Alert.alert(t('savedSuccess'), t('savedSuccessDesc'));
+        Alert.alert(t("savedSuccess"), t("savedSuccessDesc"));
       } else {
-        Alert.alert(t('permissionDenied'), t('permissionDeniedDesc'));
+        Alert.alert(t("permissionDenied"), t("permissionDeniedDesc"));
       }
     }
   };
@@ -70,17 +96,30 @@ export default function ExportScreen() {
   const handleDone = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     reset();
-    router.replace('/');
+    router.replace("/");
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.background }} className="px-5 py-4 justify-center items-center">
+    <View
+      style={{ flex: 1, backgroundColor: theme.background }}
+      className="px-5 py-4 justify-center items-center"
+    >
+      {ComposerPortal}
       {loading ? (
         <View className="items-center">
-          <ActivityIndicator size="large" color={theme.primary} className="mb-4" />
-          <Text style={{ color: theme.text }} className="font-bold text-base">{t('destroyingPixels')}</Text>
-          <Text style={{ color: theme.textSecondary }} className="text-xs text-center mt-1 max-w-xs">
-            {t('destroyingPixelsDesc')}
+          <ActivityIndicator
+            size="large"
+            color={theme.primary}
+            className="mb-4"
+          />
+          <Text style={{ color: theme.text }} className="font-bold text-base">
+            {t("destroyingPixels")}
+          </Text>
+          <Text
+            style={{ color: theme.textSecondary }}
+            className="text-xs text-center mt-1 max-w-xs"
+          >
+            {t("destroyingPixelsDesc")}
           </Text>
         </View>
       ) : (
@@ -94,11 +133,20 @@ export default function ExportScreen() {
             className="w-full h-64 border rounded-3xl overflow-hidden mb-4 relative justify-center items-center shadow-sm"
           >
             {exportedUri ? (
-              <Image source={{ uri: exportedUri }} className="w-full h-full" resizeMode="contain" />
+              <Image
+                source={{ uri: exportedUri }}
+                className="w-full h-full"
+                resizeMode="contain"
+              />
             ) : null}
             <View className="absolute bottom-2 right-2 bg-emerald-950/80 border border-emerald-500/50 px-2.5 py-1 rounded-full flex-row items-center">
               <ShieldCheck size={12} color={theme.success} />
-              <Text style={{ color: theme.success }} className="text-[10px] font-bold ml-1">{t('flattenedBitmap')}</Text>
+              <Text
+                style={{ color: theme.success }}
+                className="text-[10px] font-bold ml-1"
+              >
+                {t("flattenedBitmap")}
+              </Text>
             </View>
           </View>
 
@@ -124,7 +172,12 @@ export default function ExportScreen() {
               className="w-full py-4 rounded-2xl flex-row items-center justify-center mb-3 min-h-[50px]"
             >
               <Share2 size={18} color={theme.onPrimary} />
-              <Text style={{ color: theme.onPrimary }} className="font-bold text-base ml-2">{t('shareRedacted')}</Text>
+              <Text
+                style={{ color: theme.onPrimary }}
+                className="font-bold text-base ml-2"
+              >
+                {t("shareRedacted")}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -138,12 +191,15 @@ export default function ExportScreen() {
               }}
               className="w-full py-3.5 rounded-2xl flex-row items-center justify-center border min-h-[48px]"
             >
-              <Download size={18} color={savedToRoll ? theme.success : theme.text} />
+              <Download
+                size={18}
+                color={savedToRoll ? theme.success : theme.text}
+              />
               <Text
                 style={{ color: savedToRoll ? theme.success : theme.text }}
                 className="font-semibold text-sm ml-2"
               >
-                {savedToRoll ? t('savedToPhotos') : t('saveToRoll')}
+                {savedToRoll ? t("savedToPhotos") : t("saveToRoll")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -154,8 +210,11 @@ export default function ExportScreen() {
             className="flex-row items-center py-3 min-h-[44px]"
           >
             <RotateCcw size={14} color={theme.textMuted} />
-            <Text style={{ color: theme.textSecondary }} className="text-xs font-semibold ml-1.5">
-              {t('redactAnother')}
+            <Text
+              style={{ color: theme.textSecondary }}
+              className="text-xs font-semibold ml-1.5"
+            >
+              {t("redactAnother")}
             </Text>
           </TouchableOpacity>
         </View>
