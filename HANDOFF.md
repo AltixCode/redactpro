@@ -59,3 +59,9 @@ UI and device-level verification remain open. App Store Connect and Google Play 
 * CI-equivalent validation after dependency installation: `rtk npm ci --legacy-peer-deps`, `rtk npm run typecheck`, `rtk npm run export:ios`, and `rtk npm run export:android` all PASS. The two platform exports ran concurrently.
 * Remaining validation: run the app on iOS Simulator and Android emulator/physical devices, exercise import/camera, OCR results, redaction toggles, export/share/save, and purchase/restore failure states, then check for console exceptions.
 * Store provisioning remains owner-managed. The workflow uses the `PLAY_STORE_SERVICE_ACCOUNT_JSON` repository secret when Play publishing is enabled.
+## Verification Update — 2026-09-13 (Runner and Store Gating)
+
+* Workflow update pushed in the latest main commit: Linux jobs install the Android SDK platform/build tools/NDK explicitly; iOS remains on the self-hosted macOS ARM64 runner.
+* iOS and Android jobs remain independent so they can run simultaneously on separate self-hosted machines. Repository concurrency still limits duplicate release workflows to one active run per repository.
+* Store uploads are disabled on ordinary pushes until repository variable `ENABLE_STORE_UPLOADS=true` is configured. Manual dispatch can enable submission explicitly. This keeps builds green while App Store Connect and Google Play records are being created by the owner.
+* The `PLAY_STORE_SERVICE_ACCOUNT_JSON` secret is the only supported CI credential input for Play publishing; no local credential path is committed.
