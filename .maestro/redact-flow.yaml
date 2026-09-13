@@ -72,8 +72,11 @@ name: Redact a statement end to end
 # shipped with was an export path that ignored its redactions entirely while
 # the preview looked correct.
 - tapOn: ".*(Save to Camera Roll|Save to Photos).*"
+# Assert the success title, not the OK button. The success alert and the
+# permission-denied alert both carry an OK, so waiting on ".*OK.*" stayed green
+# while every save was failing and nothing reached the camera roll.
 - extendedWaitUntil:
-    visible: ".*OK.*"
+    visible: "Saved!"
     timeout: 30000
-- tapOn: ".*OK.*"
+- tapOn: "OK"
 - takeScreenshot: artifacts/04-saved

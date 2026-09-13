@@ -82,13 +82,18 @@ export default function ExportScreen() {
   const handleSaveToLibrary = async () => {
     if (exportedUri) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      const success = await saveToPhotos(exportedUri);
-      if (success) {
+      const outcome = await saveToPhotos(exportedUri);
+      if (outcome.ok) {
         setSavedToRoll(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         Alert.alert(t("savedSuccess"), t("savedSuccessDesc"));
-      } else {
+      } else if (outcome.reason === "permission") {
         Alert.alert(t("permissionDenied"), t("permissionDeniedDesc"));
+      } else {
+        // A save that failed for any other reason is not a permission problem;
+        // telling the user to grant access they already granted sends them in
+        // a circle. The export is still on disk, so offer sharing instead.
+        Alert.alert(t("saveFailed"), t("saveFailedDesc"));
       }
     }
   };
