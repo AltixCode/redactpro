@@ -24,9 +24,16 @@ name: Redact a statement end to end
 - takeScreenshot: artifacts/01-home
 
 - tapOn: ".*Import Screenshot or Photo.*"
+# Anchor on the picker's own scroll view, not on visible text. A text wait like
+# ".*Photos.*" is also satisfied by the app's own import button, so it passes
+# instantly and the taps below fire while the picker is still presenting --
+# they report COMPLETED and select nothing.
 - extendedWaitUntil:
-    visible: ".*(Recents|Photos|All Photos|Library).*"
-    timeout: 25000
+    visible:
+      id: "photosView_content_scroll_view"
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 8000
 
 # Select the fixture by its accessibility label rather than a coordinate: the
 # picker grid starts below the segmented control, and a percentage tap that
