@@ -11,15 +11,80 @@ name: Store screenshots
 - takeScreenshot: 01-hero
 
 - tapOn: ".*Import Screenshot or Photo.*"
+# Waited for, not assumed, and optional so the iPad can fall through: the
+# branch conditions below are evaluated once with no wait of their own, so
+# without this the iPhone takes the iPad path whenever the picker is a moment
+# slow to present.
 - extendedWaitUntil:
     visible:
       id: "photosView_content_scroll_view"
-    timeout: 30000
-- waitForAnimationToEnd:
-    timeout: 8000
-- tapOn:
-    text: "Photo, [^,]+, [^,]+"
-    index: 0
+    timeout: 20000
+    optional: true
+
+# The picker differs enough between the two devices that it needs two paths.
+#
+# On iPhone it is presented full screen and exposes its grid to accessibility,
+# so the wait below is a real anchor.
+#
+# On iPad it is a popover, and its contents are not in the accessibility tree at
+# all -- the only element there is a "dismiss popup" region. Nothing can be
+# waited on or matched, so that path is driven by position, which is stable for
+# a fixed device and runtime.
+- runFlow:
+    when:
+      visible:
+        id: "photosView_content_scroll_view"
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 8000
+      - tapOn:
+          text: "Photo, [^,]+, [^,]+"
+          index: 0
+- runFlow:
+    when:
+      notVisible:
+        id: "photosView_content_scroll_view"
+    commands:
+      # Three settles, not one. waitForAnimationToEnd returns as soon as the
+      # screen stops moving, which happens before the picker's grid is
+      # interactive: a tap that lands in that window is delivered and does
+      # nothing, and the flow carries on having selected nothing.
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - tapOn:
+          point: "39%,35%"
+      - waitForAnimationToEnd:
+          timeout: 3000
+      # The checkmark at the top right, which is what confirms on iPad. The
+      # button along the bottom reads "Show Selected" and only filters the grid.
+      - tapOn:
+          point: "87%,28%"
+# The review screen presents the paywall over itself for a free account, and an
+# element behind a modal does not count as visible -- so the assertion below
+# fails on a screen that loaded perfectly well.
+#
+# Waited for first, and optionally: a runFlow condition is evaluated the moment
+# it is reached, which is while the photo is still being processed and before
+# the sheet exists.
+- extendedWaitUntil:
+    visible: ".*ANTI-SUBSCRIPTION PROMISE.*"
+    timeout: 45000
+    optional: true
+# Closed by its own button. The paywall is a full-screen route rather than a
+# draggable sheet, so a swipe down does nothing to it.
+- runFlow:
+    when:
+      visible: ".*ANTI-SUBSCRIPTION PROMISE.*"
+    commands:
+      # Matched on the accessibility label, not an id: Maestro's `id` matcher
+      # looks at testID, which this button does not have.
+      - tapOn: "Cancel"
+      - waitForAnimationToEnd:
+          timeout: 3000
 - extendedWaitUntil:
     visible: ".*Review Redactions.*"
     timeout: 60000
