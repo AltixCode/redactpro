@@ -17,6 +17,9 @@ import { useRedactionComposer } from "../src/engine/redactionComposer";
 import { PrivacyBadge } from "../src/components/PrivacyBadge";
 import { useTheme } from "../src/theme/useTheme";
 import { t } from "../src/i18n";
+import { useAdsStore } from '../src/store/adsStore';
+import { showInterstitial } from '../src/services/ads';
+import { shouldShowInterstitial } from '../src/services/adPolicy';
 
 export default function ExportScreen() {
   const router = useRouter();
@@ -79,6 +82,22 @@ export default function ExportScreen() {
     }
   };
 
+  const maybeShowInterstitial = async () => {
+    const { completions, lastInterstitialAt, markInterstitialShown } = useAdsStore.getState();
+    const decision = shouldShowInterstitial({
+      completions,
+      lastInterstitialAt,
+      now: Date.now(),
+      // Read at call time rather than captured: the user may have bought the upgrade from the
+      // paywall between opening this screen and finishing the work.
+      isPro: useRedactStore.getState().isPro,
+    });
+    if (!decision) return;
+    // Only a shown-and-dismissed ad resets the clock. Counting an unfilled request would
+    // suppress the next several ads for nothing.
+    if (await showInterstitial()) await markInterstitialShown();
+  };
+
   const handleSaveToLibrary = async () => {
     if (exportedUri) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -86,7 +105,12 @@ export default function ExportScreen() {
       if (outcome.ok) {
         setSavedToRoll(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        Alert.alert(t("savedSuccess"), t("savedSuccessDesc"));
+        await useAdsStore.getState().recordCompletion();
+        // The ad waits behind the confirmation, and only on a genuine save -- a redaction the
+        // user could not keep earns no interruption on top of it.
+        Alert.alert(t("savedSuccess"), t("savedSuccessDesc"), [
+          { text: t("ok"), onPress: () => void maybeShowInterstitial() },
+        ]);
       } else if (outcome.reason === "permission") {
         Alert.alert(t("permissionDenied"), t("permissionDeniedDesc"));
       } else {
