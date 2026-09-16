@@ -47,3 +47,8 @@ dist/
 CLAUDE.md
 GEMINI.md
 artifacts/
+
+# env — local secrets and public SDK keys, never committed
+.env
+.env.local
+.env.*.local
