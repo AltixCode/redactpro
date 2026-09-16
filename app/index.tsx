@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -39,13 +39,6 @@ export default function HomeScreen() {
   const tabletColumn = useTabletColumn();
   const { setImage, setRegions, setIsScanning } = useRedactStore();
   const [loading, setLoading] = useState(false);
-  const [readyToCensor, setReadyToCensor] = useState(false);
-
-  useEffect(() => {
-    if (!readyToCensor) return;
-    setReadyToCensor(false);
-    router.push("/censor");
-  }, [readyToCensor, router]);
 
   const processImage = async (uri: string) => {
     try {
@@ -69,21 +62,7 @@ export default function HomeScreen() {
       setRegions([...scan.regions, ...scan.unmatchedLines]);
 
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      // Navigate from an effect, not from here.
-      //
-      // This runs as the continuation of an await chain that began when the
-      // system photo picker took over the screen. By the time it resumes, the
-      // router object captured at render is being read outside the navigation
-      // context that produced it, and expo-router throws MISSING_CONTEXT_ERROR
-      // from the getKey getter -- reported as "Couldn't find a navigation
-      // context", which sends the reader to the root layout rather than here.
-      // Reproduced on two machines; the home screen renders fine and the crash
-      // lands on the app's primary action.
-      //
-      // Setting state and letting an effect navigate means the push happens
-      // during a normal render pass, from a router read in the same context it
-      // was created in.
-      setReadyToCensor(true);
+      router.push("/censor");
     } catch (err: any) {
       Alert.alert(
         t("processingError"),
