@@ -22,6 +22,7 @@ import {
 import { useRedactStore } from "../src/store/useRedactStore";
 import { scanImageForPii } from "../src/vision/ocrScanner";
 import { useTheme } from "../src/theme/useTheme";
+import { useTabletColumn } from "../src/theme/useTabletColumn";
 import { t } from "../src/i18n";
 import { ForwardArrow } from '../src/components/DirectionalIcons';
 import { AdBanner } from '../src/components/AdBanner';
@@ -35,6 +36,7 @@ export default function HomeScreen() {
   const offerPrivacyOptions = useAdsStore((state) => state.consent.offerPrivacyOptions);
   const router = useRouter();
   const theme = useTheme();
+  const tabletColumn = useTabletColumn();
   const { setImage, setRegions, setIsScanning } = useRedactStore();
   const [loading, setLoading] = useState(false);
 
@@ -120,7 +122,7 @@ export default function HomeScreen() {
     >
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 }}
+        contentContainerStyle={{ paddingBottom: 32 , ...tabletColumn}}
       >
         {/* Header Hero */}
         <View className="mt-4 mb-6">
