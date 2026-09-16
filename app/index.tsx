@@ -156,25 +156,53 @@ export default function HomeScreen() {
         </View>
 
         {/* Action Import Cards */}
+        {/* Styles here, not classNames.
+ 
+            Importing a photo crashed the app with "Couldn't find a navigation
+            context". Isolated by the capture session over six cuts: it is not
+            the navigation, not the state updates and not the native OCR
+            (which still runs in the passing cut) -- it is `setLoading(true)`
+            swapping THIS branch in. A NativeWind-wrapped component mounting
+            during that re-render reads the navigation getter outside its
+            provider; react-native-css-interop is the `api.js` frame in the
+            stack.
+ 
+            It is not that NativeWind is broken here -- 37 classNames elsewhere
+            in this file are fine. It is a wrapped component MOUNTING inside the
+            branch the loading flag swaps in. Replacing the branch with a bare
+            View also fixed it, and moving only the ActivityIndicator's
+            className did not: any of the wrapped elements will do it.
+ 
+            Same visual result, same elements, same strings. */}
         {loading ? (
           <View
             style={{
               backgroundColor: theme.card,
               borderColor: theme.cardBorder,
+              borderWidth: 1,
+              borderRadius: 24,
+              padding: 40,
+              alignItems: "center",
+              justifyContent: "center",
+              marginVertical: 12,
             }}
-            className="border rounded-3xl p-10 items-center justify-center my-3 shadow-sm"
           >
             <ActivityIndicator
               size="large"
               color={theme.primary}
-              className="mb-4"
+              style={{ marginBottom: 16 }}
             />
-            <Text style={{ color: theme.text }} className="font-bold text-base">
+            <Text style={{ color: theme.text, fontWeight: "700", fontSize: 16 }}>
               {t("runningOcr")}
             </Text>
             <Text
-              style={{ color: theme.textSecondary }}
-              className="text-xs text-center mt-1 max-w-xs"
+              style={{
+                color: theme.textSecondary,
+                fontSize: 12,
+                textAlign: "center",
+                marginTop: 4,
+                maxWidth: 320,
+              }}
             >
               {t("runningOcrDesc")}
             </Text>
