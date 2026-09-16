@@ -12,6 +12,7 @@ import { useRedactStore, RedactStyle } from '../src/store/useRedactStore';
 import { RedactionBox } from '../src/components/RedactionBox';
 import { PaywallModal } from '../src/components/PaywallModal';
 import { useTheme } from '../src/theme/useTheme';
+import { useTabletColumn } from '../src/theme/useTabletColumn';
 import { RedactionPreview } from '../src/components/RedactionPreview';
 import { t } from '../src/i18n';
 import { ForwardArrow } from '../src/components/DirectionalIcons';
@@ -19,6 +20,7 @@ import { ForwardArrow } from '../src/components/DirectionalIcons';
 export default function CensorScreen() {
   const router = useRouter();
   const theme = useTheme();
+  const tabletColumn = useTabletColumn();
   const {
     imageUri,
     imageWidth,
@@ -71,7 +73,7 @@ export default function CensorScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.background }} className="px-5">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 , ...tabletColumn}}>
         {/* Document Thumbnail Preview */}
         <View
           style={{
