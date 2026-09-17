@@ -28,7 +28,7 @@ import { t } from '../src/i18n';
 export default function PaywallScreen() {
   const router = useRouter();
   const theme = useTheme();
-  const tabletColumn = useTabletColumn();
+  const tabletColumn = useTabletColumn(640);
   const { ctaLabel, loading, errorMsg, handlePurchase, handleRestore } =
     usePaywall(() => router.back());
 
@@ -93,7 +93,7 @@ export default function PaywallScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} className="flex-1" contentContainerStyle={tabletColumn}>
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1" contentContainerStyle={{ ...tabletColumn, flexGrow: 1, justifyContent: 'center' }}>
         {/* Anti-Subscription Card */}
         <View
           style={{
