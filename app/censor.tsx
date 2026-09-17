@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import {
   ShieldAlert,
@@ -18,7 +18,6 @@ import { t } from '../src/i18n';
 import { ForwardArrow } from '../src/components/DirectionalIcons';
 
 export default function CensorScreen() {
-  const router = useRouter();
   const theme = useTheme();
   const tabletColumn = useTabletColumn();
   const {

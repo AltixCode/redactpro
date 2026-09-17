@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import * as Sharing from "expo-sharing";
 import { ShieldCheck, Share2, Download, RotateCcw } from "lucide-react-native";
@@ -22,7 +22,6 @@ import { showInterstitial } from '../src/services/ads';
 import { shouldShowInterstitial } from '../src/services/adPolicy';
 
 export default function ExportScreen() {
-  const router = useRouter();
   const theme = useTheme();
   const {
     imageUri,

@@ -8,7 +8,14 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+// The imperative `router`, not `useRouter()`. This screen's only navigation
+// happens after `await`ing the picker, an image re-encode and an OCR pass, and
+// by then the context the hook captured at render can be gone -- iOS tears the
+// presenting view down around a PHPicker. The hook's router reads navigation
+// context on use and throws "Couldn't find a navigation context" from a getKey
+// getter; the imperative router holds no context and is the API expo-router
+// provides for navigating from outside a render.
+import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Haptics from "expo-haptics";
@@ -34,7 +41,6 @@ export default function HomeScreen() {
   // privacy options are available, which in practice means the EEA and the regulated US
   // states. It is absent everywhere else rather than shown as a dead control.
   const offerPrivacyOptions = useAdsStore((state) => state.consent.offerPrivacyOptions);
-  const router = useRouter();
   const theme = useTheme();
   const tabletColumn = useTabletColumn();
   const { setImage, setRegions, setIsScanning } = useRedactStore();
