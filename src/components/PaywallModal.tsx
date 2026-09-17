@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Linking,
+  useWindowDimensions,
 } from 'react-native';
 import {
   Sparkles,
@@ -30,6 +31,19 @@ interface PaywallModalProps {
 
 export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) => {
   const theme = useTheme();
+  // On a tablet this stops being a bottom sheet and becomes a centred card.
+  //
+  // A sheet anchored to the bottom of a 13" iPad leaves more than half the
+  // display as dimmed backdrop above it, and the purchase -- the whole reason
+  // the sheet exists -- sits in the last third of the screen. The bottom
+  // anchor is a phone idiom: it puts the content within reach of a thumb.
+  // There is no thumb at this size.
+  const { width: screenWidth } = useWindowDimensions();
+  const isTablet = screenWidth >= 700;
+  const asCard = isTablet
+    ? { maxWidth: 640, width: '100%' as const, borderRadius: 24, borderTopWidth: 1 }
+    : null;
+
   const { ctaLabel, loading, errorMsg, handlePurchase, handleRestore } =
     usePaywall(onClose);
 
@@ -58,12 +72,17 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <View className="flex-1 bg-black/60 justify-end">
+      <View
+        className={`flex-1 bg-black/60 ${isTablet ? "justify-center items-center" : "justify-end"}`}
+      >
         <View
-          style={{
-            backgroundColor: theme.surface,
-            borderTopColor: theme.cardBorder,
-          }}
+          style={[
+            {
+              backgroundColor: theme.surface,
+              borderTopColor: theme.cardBorder,
+            },
+            asCard,
+          ]}
           className="border-t rounded-t-3xl p-6 max-h-[90%] shadow-2xl"
         >
           {/* Header */}
