@@ -34,10 +34,16 @@ npx tsc --noEmit
 ```
 
 ## 4. Legal Pages & Coolify Hosting
-Static legal landing pages for Privacy Policy and Terms of Service are hosted at:
-* `https://www.altixcode.com/legal/redactpro-privacy`
-* `https://www.altixcode.com/legal/redactpro-terms`
-Deployed via Coolify on Hetzner VPS (`2.28.42.222`).
+There is no per-app legal page. One shared privacy policy covers every app in
+the portfolio identically (see `AltixCode/AltixCode.com`'s `src/lib/legal.ts`,
+slug `app-privacy`) -- App Store Connect's live listing for this app already
+points at it correctly:
+* `https://altixcode.com/legal/app-privacy`
+The per-app `redactpro-privacy`/`redactpro-terms` URLs previously documented
+here were never real -- no such routes exist on the site (confirmed 404s) and
+nothing in this repo ever linked to them. Do not resurrect them; use the
+shared URL above for Play Console or anywhere else this app needs to declare
+a privacy policy link. Deployed via Coolify on Hetzner VPS (`2.28.42.222`).
 
 ## 5. Technical Gotchas & Edge Cases
 * Zero-log and zero-cloud invariants: No remote analytics, error trackers, or telemetry that uploads user media or identifiers.
