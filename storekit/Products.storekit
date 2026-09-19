@@ -1,0 +1,35 @@
+{
+  "identifier": "E27809C8-9C4B-42D9-9FC4-34ED87438FCE",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "4.99",
+      "familyShareable": false,
+      "internalID": "5F055328-A91F-47B0-A69E-E3B0128021EA",
+      "localizations": [
+        {
+          "description": "redactpro remove ads lifetime unlock",
+          "displayName": "redactpro remove ads",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "com.altixcode.redactpro.removeads",
+      "referenceName": "redactpro remove ads",
+      "type": "NonConsumable"
+    }
+  ],
+  "settings": {
+    "_applicationInternalID": "",
+    "_developerTeamID": "",
+    "_failTransactionsEnabled": false,
+    "_lastSynchronizedDate": 0,
+    "_locale": "en_US",
+    "_storefront": "USA",
+    "_storeKitErrors": []
+  },
+  "subscriptionGroups": [],
+  "version": {
+    "major": 4,
+    "minor": 0
+  }
+}
