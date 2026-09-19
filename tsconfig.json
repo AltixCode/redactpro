@@ -11,5 +11,9 @@
       "jest",
       "node"
     ]
-  }
+  },
+  "include": [
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }
