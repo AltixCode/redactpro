@@ -16,13 +16,15 @@ import { persistRedactedImage, saveToPhotos } from "../src/engine/rasterizer";
 import { useRedactionComposer } from "../src/engine/redactionComposer";
 import { PrivacyBadge } from "../src/components/PrivacyBadge";
 import { useTheme } from "../src/theme/useTheme";
+import { useTabletColumn } from "../src/theme/useTabletColumn";
 import { t } from "../src/i18n";
-import { useAdsStore } from '../src/store/adsStore';
-import { showInterstitial } from '../src/services/ads';
-import { shouldShowInterstitial } from '../src/services/adPolicy';
+import { useAdsStore } from "../src/store/adsStore";
+import { showInterstitial } from "../src/services/ads";
+import { shouldShowInterstitial } from "../src/services/adPolicy";
 
 export default function ExportScreen() {
   const theme = useTheme();
+  const tabletColumn = useTabletColumn();
   const {
     imageUri,
     imageWidth,
@@ -82,7 +84,8 @@ export default function ExportScreen() {
   };
 
   const maybeShowInterstitial = async () => {
-    const { completions, lastInterstitialAt, markInterstitialShown } = useAdsStore.getState();
+    const { completions, lastInterstitialAt, markInterstitialShown } =
+      useAdsStore.getState();
     const decision = shouldShowInterstitial({
       completions,
       lastInterstitialAt,
@@ -151,7 +154,7 @@ export default function ExportScreen() {
           </Text>
         </View>
       ) : (
-        <View className="w-full items-center">
+        <View className="w-full items-center" style={tabletColumn}>
           {/* Output Preview */}
           <View
             style={{
