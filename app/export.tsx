@@ -17,9 +17,9 @@ import { useRedactionComposer } from "../src/engine/redactionComposer";
 import { PrivacyBadge } from "../src/components/PrivacyBadge";
 import { useTheme } from "../src/theme/useTheme";
 import { t } from "../src/i18n";
-import { useAdsStore } from '../src/store/adsStore';
-import { showInterstitial } from '../src/services/ads';
-import { shouldShowInterstitial } from '../src/services/adPolicy';
+import { useAdsStore } from "../src/store/adsStore";
+import { showInterstitial } from "../src/services/ads";
+import { shouldShowInterstitial } from "../src/services/adPolicy";
 
 export default function ExportScreen() {
   const theme = useTheme();
@@ -82,7 +82,8 @@ export default function ExportScreen() {
   };
 
   const maybeShowInterstitial = async () => {
-    const { completions, lastInterstitialAt, markInterstitialShown } = useAdsStore.getState();
+    const { completions, lastInterstitialAt, markInterstitialShown } =
+      useAdsStore.getState();
     const decision = shouldShowInterstitial({
       completions,
       lastInterstitialAt,
@@ -191,11 +192,14 @@ export default function ExportScreen() {
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               style={{
                 backgroundColor: theme.primary,
+                // A subtle lift for the button surface itself, not a glow
+                // behind its label -- testers reported the bolder version
+                // made button text look shadowed and harder to read.
                 shadowColor: theme.primary,
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 8,
-                elevation: 4,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.15,
+                shadowRadius: 3,
+                elevation: 2,
               }}
               className="w-full py-4 rounded-2xl flex-row items-center justify-center mb-3 min-h-[50px]"
             >

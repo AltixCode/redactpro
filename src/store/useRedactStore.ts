@@ -1,7 +1,17 @@
-import { create } from 'zustand';
-import { DetectedTextRegion, BoundingBox } from '../vision/ocrScanner';
+import { create } from "zustand";
+import { DetectedTextRegion, BoundingBox } from "../vision/ocrScanner";
 
-export type RedactStyle = 'black' | 'pixelate' | 'white';
+export type RedactStyle = "black" | "pixelate" | "white";
+
+/**
+ * Every region's per-row button drives the same `toggleRedaction` action
+ * regardless of which label it shows, so the label must describe the action
+ * a tap performs NEXT, not the region's current state -- a region not yet
+ * redacted offers to redact it, and one already redacted offers to keep
+ * (revert) it.
+ */
+export const getRegionActionLabel = (isRedacted: boolean): "redact" | "keep" =>
+  isRedacted ? "keep" : "redact";
 
 interface RedactState {
   imageUri: string | null;
@@ -32,18 +42,24 @@ export const useRedactStore = create<RedactState>((set) => ({
   imageWidth: 1080,
   imageHeight: 1920,
   regions: [],
-  redactStyle: 'black',
+  redactStyle: "black",
   isPro: false,
   exportedUri: null,
   isScanning: false,
 
   setImage: (imageUri, width = 1080, height = 1920) =>
-    set({ imageUri, imageWidth: width, imageHeight: height, regions: [], exportedUri: null }),
+    set({
+      imageUri,
+      imageWidth: width,
+      imageHeight: height,
+      regions: [],
+      exportedUri: null,
+    }),
   setRegions: (regions) => set({ regions }),
   toggleRedaction: (id) =>
     set((state) => ({
       regions: state.regions.map((r) =>
-        r.id === id ? { ...r, isRedacted: !r.isRedacted } : r
+        r.id === id ? { ...r, isRedacted: !r.isRedacted } : r,
       ),
     })),
   addManualBox: (box) =>
@@ -52,7 +68,7 @@ export const useRedactStore = create<RedactState>((set) => ({
         ...state.regions,
         {
           id: `manual_${Date.now()}`,
-          text: 'Manual Redaction',
+          text: "Manual Redaction",
           box,
           isRedacted: true,
         },

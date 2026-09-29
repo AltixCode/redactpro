@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Modal,
   View,
@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   Linking,
   useWindowDimensions,
-} from 'react-native';
+} from "react-native";
 import {
   Sparkles,
   ShieldCheck,
@@ -17,19 +17,22 @@ import {
   Layers,
   Check,
   X,
-} from 'lucide-react-native';
-import { useRedactStore } from '../store/useRedactStore';
-import { usePaywall } from '../hooks/usePaywall';
-import { PRIVACY_POLICY_URL, TERMS_OF_USE_URL } from '../config/legal';
-import { useTheme } from '../theme/useTheme';
-import { t } from '../i18n';
+} from "lucide-react-native";
+import { useRedactStore } from "../store/useRedactStore";
+import { usePaywall } from "../hooks/usePaywall";
+import { PRIVACY_POLICY_URL, TERMS_OF_USE_URL } from "../config/legal";
+import { useTheme } from "../theme/useTheme";
+import { t } from "../i18n";
 
 interface PaywallModalProps {
   visible: boolean;
   onClose: () => void;
 }
 
-export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) => {
+export const PaywallModal: React.FC<PaywallModalProps> = ({
+  visible,
+  onClose,
+}) => {
   const theme = useTheme();
   // On a tablet this stops being a bottom sheet and becomes a centred card.
   //
@@ -41,7 +44,12 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
   const { width: screenWidth } = useWindowDimensions();
   const isTablet = screenWidth >= 700;
   const asCard = isTablet
-    ? { maxWidth: 640, width: '100%' as const, borderRadius: 24, borderTopWidth: 1 }
+    ? {
+        maxWidth: 640,
+        width: "100%" as const,
+        borderRadius: 24,
+        borderTopWidth: 1,
+      }
     : null;
 
   const { ctaLabel, loading, errorMsg, handlePurchase, handleRestore } =
@@ -50,23 +58,23 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
   const features = [
     {
       icon: <Zap size={20} color={theme.accent} />,
-      title: t('feat1Title'),
-      desc: t('feat1Desc'),
+      title: t("feat1Title"),
+      desc: t("feat1Desc"),
     },
     {
       icon: <EyeOff size={20} color={theme.purple} />,
-      title: t('feat2Title'),
-      desc: t('feat2Desc'),
+      title: t("feat2Title"),
+      desc: t("feat2Desc"),
     },
     {
       icon: <Layers size={20} color={theme.warning} />,
-      title: t('feat3Title'),
-      desc: t('feat3Desc'),
+      title: t("feat3Title"),
+      desc: t("feat3Desc"),
     },
     {
       icon: <ShieldCheck size={20} color={theme.success} />,
-      title: t('feat4Title'),
-      desc: t('feat4Desc'),
+      title: t("feat4Title"),
+      desc: t("feat4Desc"),
     },
   ];
 
@@ -97,8 +105,11 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
               >
                 <Sparkles size={20} color={theme.primary} />
               </View>
-              <Text style={{ color: theme.text }} className="text-xl font-extrabold ml-2.5">
-                {t('paywallTitle')}
+              <Text
+                style={{ color: theme.text }}
+                className="text-xl font-extrabold ml-2.5"
+              >
+                {t("paywallTitle")}
               </Text>
             </View>
             <TouchableOpacity
@@ -107,7 +118,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
               // "button" and nothing else, which on the one control that
               // dismisses a paywall is the worst place for it.
               accessibilityRole="button"
-              accessibilityLabel={t('cancel')}
+              accessibilityLabel={t("cancel")}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
               style={{ backgroundColor: theme.controlSurface }}
               className="p-2 rounded-full"
@@ -124,16 +135,25 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
             }}
             className="border p-4 rounded-2xl mb-5"
           >
-            <Text style={{ color: theme.primary }} className="text-xs font-bold uppercase tracking-wider mb-1">
-              {t('antiSubTitle')}
+            <Text
+              style={{ color: theme.primary }}
+              className="text-xs font-bold uppercase tracking-wider mb-1"
+            >
+              {t("antiSubTitle")}
             </Text>
-            <Text style={{ color: theme.text }} className="text-sm font-semibold leading-snug">
-              {t('antiSubHeadline')}
+            <Text
+              style={{ color: theme.text }}
+              className="text-sm font-semibold leading-snug"
+            >
+              {t("antiSubHeadline")}
             </Text>
           </View>
 
           {/* Features List */}
-          <ScrollView showsVerticalScrollIndicator={false} className="flex-col gap-3.5 mb-5">
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="flex-col gap-3.5 mb-5"
+          >
             {features.map((f, i) => (
               <View key={i} className="flex-row items-start mb-3.5">
                 <View
@@ -146,15 +166,30 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
                   {f.icon}
                 </View>
                 <View className="flex-1">
-                  <Text style={{ color: theme.text }} className="text-sm font-bold">{f.title}</Text>
-                  <Text style={{ color: theme.textSecondary }} className="text-xs mt-0.5 leading-relaxed">{f.desc}</Text>
+                  <Text
+                    style={{ color: theme.text }}
+                    className="text-sm font-bold"
+                  >
+                    {f.title}
+                  </Text>
+                  <Text
+                    style={{ color: theme.textSecondary }}
+                    className="text-xs mt-0.5 leading-relaxed"
+                  >
+                    {f.desc}
+                  </Text>
                 </View>
               </View>
             ))}
           </ScrollView>
 
           {errorMsg && (
-            <Text style={{ color: theme.danger }} className="text-xs text-center mb-3 font-medium">{errorMsg}</Text>
+            <Text
+              style={{ color: theme.danger }}
+              className="text-xs text-center mb-3 font-medium"
+            >
+              {errorMsg}
+            </Text>
           )}
 
           {/* Purchase Button */}
@@ -165,11 +200,14 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             style={{
               backgroundColor: theme.primary,
+              // A subtle lift for the button surface itself, not a glow
+              // behind its label -- testers reported the bolder version made
+              // button text look shadowed and harder to read.
               shadowColor: theme.primary,
-              shadowOffset: { width: 0, height: 6 },
-              shadowOpacity: 0.35,
-              shadowRadius: 10,
-              elevation: 6,
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.18,
+              shadowRadius: 4,
+              elevation: 3,
             }}
             className="p-4 rounded-2xl items-center flex-row justify-center min-h-[52px]"
           >
@@ -177,7 +215,10 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
               <ActivityIndicator color={theme.onPrimary} />
             ) : (
               <>
-                <Text style={{ color: theme.onPrimary }} className="font-extrabold text-base mr-2">
+                <Text
+                  style={{ color: theme.onPrimary }}
+                  className="font-extrabold text-base mr-2"
+                >
                   {ctaLabel}
                 </Text>
                 <Check size={18} color={theme.onPrimary} strokeWidth={3} />
@@ -192,36 +233,49 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ visible, onClose }) 
               disabled={loading}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <Text style={{ color: theme.textSecondary }} className="text-xs underline font-medium">
-                {t('restorePurchases')}
+              <Text
+                style={{ color: theme.textSecondary }}
+                className="text-xs underline font-medium"
+              >
+                {t("restorePurchases")}
               </Text>
             </TouchableOpacity>
-            <Text style={{ color: theme.textMuted }} className="text-xs">•</Text>
-            <Text style={{ color: theme.textMuted }} className="text-xs font-medium">
-              {t('oneTimePayment')}
+            <Text style={{ color: theme.textMuted }} className="text-xs">
+              •
+            </Text>
+            <Text
+              style={{ color: theme.textMuted }}
+              className="text-xs font-medium"
+            >
+              {t("oneTimePayment")}
             </Text>
           </View>
-        <View className="mt-3 flex-row items-center justify-center gap-5">
-          <TouchableOpacity
-            onPress={() => Linking.openURL(TERMS_OF_USE_URL)}
-            accessibilityRole="link"
-            hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
-          >
-            <Text style={{ color: theme.textMuted }} className="text-xs underline">
-              {t('termsOfUse')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
-            accessibilityRole="link"
-            hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
-          >
-            <Text style={{ color: theme.textMuted }} className="text-xs underline">
-              {t('privacyPolicy')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
+          <View className="mt-3 flex-row items-center justify-center gap-5">
+            <TouchableOpacity
+              onPress={() => Linking.openURL(TERMS_OF_USE_URL)}
+              accessibilityRole="link"
+              hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+            >
+              <Text
+                style={{ color: theme.textMuted }}
+                className="text-xs underline"
+              >
+                {t("termsOfUse")}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+              accessibilityRole="link"
+              hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+            >
+              <Text
+                style={{ color: theme.textMuted }}
+                className="text-xs underline"
+              >
+                {t("privacyPolicy")}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>

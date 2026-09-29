@@ -17,30 +17,35 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // provides for navigating from outside a render.
 import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as Haptics from "expo-haptics";
 import {
   Sparkles,
   Camera,
   Image as ImageIcon,
+  FolderOpen,
   ShieldCheck,
   Zap,
-} from 'lucide-react-native';
+} from "lucide-react-native";
 import { useRedactStore } from "../src/store/useRedactStore";
 import { scanImageForPii } from "../src/vision/ocrScanner";
+import { classifyPickedDocument } from "../src/services/documentSource";
 import { useTheme } from "../src/theme/useTheme";
 import { useTabletColumn } from "../src/theme/useTabletColumn";
 import { t } from "../src/i18n";
-import { ForwardArrow } from '../src/components/DirectionalIcons';
-import { AdBanner } from '../src/components/AdBanner';
-import { useAdsStore } from '../src/store/adsStore';
-import { showPrivacyOptionsForm } from '../src/services/ads';
+import { ForwardArrow } from "../src/components/DirectionalIcons";
+import { AdBanner } from "../src/components/AdBanner";
+import { useAdsStore } from "../src/store/adsStore";
+import { showPrivacyOptionsForm } from "../src/services/ads";
 
 export default function HomeScreen() {
   // Google requires a persistent entry back into the consent form wherever UMP reports that
   // privacy options are available, which in practice means the EEA and the regulated US
   // states. It is absent everywhere else rather than shown as a dead control.
-  const offerPrivacyOptions = useAdsStore((state) => state.consent.offerPrivacyOptions);
+  const offerPrivacyOptions = useAdsStore(
+    (state) => state.consent.offerPrivacyOptions,
+  );
   const theme = useTheme();
   const tabletColumn = useTabletColumn();
   const { setImage, setRegions, setIsScanning } = useRedactStore();
@@ -120,6 +125,41 @@ export default function HomeScreen() {
     }
   };
 
+  const handlePickFromFiles = async () => {
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      const result = await DocumentPicker.getDocumentAsync({
+        // Files/iCloud shows both regardless of this filter on most
+        // providers, but it steers the picker's own UI toward what this
+        // screen can actually use.
+        type: ["image/*", "application/pdf"],
+        copyToCacheDirectory: true,
+        multiple: false,
+      });
+
+      if (result.canceled || !result.assets || result.assets.length === 0) {
+        return;
+      }
+
+      const asset = result.assets[0];
+      const kind = classifyPickedDocument(asset);
+
+      if (kind === "image") {
+        await processImage(asset.uri);
+      } else if (kind === "pdf") {
+        // The on-device recogniser (Vision/ML Kit) reads raster images only
+        // -- there is no PDF-page rasterizer wired into the native scanner
+        // module. Telling the user that plainly beats a cryptic native
+        // failure deep inside processImage.
+        Alert.alert(t("pdfUnsupportedTitle"), t("pdfUnsupportedDesc"));
+      } else {
+        Alert.alert(t("error"), t("couldNotOpenFiles"));
+      }
+    } catch {
+      Alert.alert(t("error"), t("couldNotOpenFiles"));
+    }
+  };
+
   return (
     <SafeAreaView
       edges={["bottom"]}
@@ -128,7 +168,9 @@ export default function HomeScreen() {
     >
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 32 , ...tabletColumn,
+        contentContainerStyle={{
+          paddingBottom: 32,
+          ...tabletColumn,
           // A fixed block, not a list that grows, so it is centred when there
           // is slack. On a 13" iPad these screens sat at the top with a third
           // or more of the display empty beneath them. Deliberately not applied
@@ -136,7 +178,7 @@ export default function HomeScreen() {
           // adds to -- centring a growing list leaves it floating with dead
           // space above and below.
           flexGrow: 1,
-          justifyContent: 'center',
+          justifyContent: "center",
         }}
       >
         {/* Header Hero */}
@@ -207,7 +249,9 @@ export default function HomeScreen() {
               color={theme.primary}
               style={{ marginBottom: 16 }}
             />
-            <Text style={{ color: theme.text, fontWeight: "700", fontSize: 16 }}>
+            <Text
+              style={{ color: theme.text, fontWeight: "700", fontSize: 16 }}
+            >
               {t("runningOcr")}
             </Text>
             <Text
@@ -267,7 +311,7 @@ export default function HomeScreen() {
                 backgroundColor: theme.card,
                 borderColor: theme.cardBorder,
               }}
-              className="border rounded-3xl p-6 flex-row items-center justify-between shadow-sm"
+              className="border rounded-3xl p-6 flex-row items-center justify-between mb-3 shadow-sm"
             >
               <View className="flex-row items-center flex-1 mr-3">
                 <View
@@ -288,6 +332,41 @@ export default function HomeScreen() {
                     className="text-xs mt-0.5 leading-relaxed"
                   >
                     {t("scanCameraDesc")}
+                  </Text>
+                </View>
+              </View>
+              <ForwardArrow size={18} color={theme.textMuted} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handlePickFromFiles}
+              activeOpacity={0.85}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              style={{
+                backgroundColor: theme.card,
+                borderColor: theme.cardBorder,
+              }}
+              className="border rounded-3xl p-6 flex-row items-center justify-between shadow-sm"
+            >
+              <View className="flex-row items-center flex-1 mr-3">
+                <View
+                  style={{ backgroundColor: theme.successLight }}
+                  className="p-3.5 rounded-2xl mr-3.5"
+                >
+                  <FolderOpen size={26} color={theme.success} />
+                </View>
+                <View className="flex-1">
+                  <Text
+                    style={{ color: theme.text }}
+                    className="font-bold text-base"
+                  >
+                    {t("importFilesTitle")}
+                  </Text>
+                  <Text
+                    style={{ color: theme.textSecondary }}
+                    className="text-xs mt-0.5 leading-relaxed"
+                  >
+                    {t("importFilesDesc")}
                   </Text>
                 </View>
               </View>
@@ -366,8 +445,11 @@ export default function HomeScreen() {
             className="mt-2 py-3 items-center"
             style={{ minHeight: 44 }}
           >
-            <Text className="text-xs font-semibold underline" style={{ color: theme.textSecondary }}>
-              {t('adPrivacySettings')}
+            <Text
+              className="text-xs font-semibold underline"
+              style={{ color: theme.textSecondary }}
+            >
+              {t("adPrivacySettings")}
             </Text>
           </TouchableOpacity>
         ) : null}
